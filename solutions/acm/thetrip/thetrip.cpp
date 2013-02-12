@@ -18,9 +18,11 @@ private:
 	int diff;
 	int nGivers;
 	int nTakers;
+	int nTripNum;
 public:
 	Trip() { 
 		//freopen ("C:\\data\\personal\\programming\\acm\\input_files\\thetrip\\input.txt", "r", stdin); 
+		nTripNum = 0;
 	}
 	
 	void process() {
@@ -28,22 +30,28 @@ public:
 			if(nStudents == 0) { 
 				return; 
 			}
-
-			initMembers();
 			
-			cout << nStudents << endl;
+			initMembers();
+
+			++nTripNum;
+			
+			//cout<< nStudents << endl;
 			
 			for(int i = 0; i < nStudents; ++i) {
 				scanf("%d.%d", &dollars, &cents);
 				//printf("%d.%d= ", dollars, cents);
 				costs[i] = dollars * 100;
 				costs[i] += cents;
-				cout << costs[i] << endl;
+				//cout<< costs[i] << endl;
 			}
 			
 			calculateMinimumMoneyExchanged();
 			
+			if (nTripNum > 1)
+				printf("\n");
+
 			printMoneyExchanged();
+			
 		}
 	}
 private:
@@ -64,15 +72,15 @@ private:
 		calculateAverage();
 
 		calculateNumGivers();
-		cout << "Num givers= " << nGivers << endl;
+		//cout<< "Num givers= " << nGivers << endl;
 
 		calculateNumTakers();
-		cout << "Num takers= " << nTakers << endl;
+		//cout<< "Num takers= " << nTakers << endl;
 
 		computeMoneyExchanged();
 	}
 	void printMoneyExchanged() {
-		printf("$%d.%02d\n", (minMoneyExchanged / 100), (minMoneyExchanged % 100)); 
+		printf("$%d.%02d", (minMoneyExchanged / 100), (minMoneyExchanged % 100)); 
 	}
 	void sortCosts() {
 		sort(costs, costs + nStudents);
@@ -82,10 +90,16 @@ private:
 			total += costs[i];
 		
 		average = total / nStudents;
-		cout << "Avg= " << average << endl;
+		if ((total % nStudents) != 0)
+			average += 1;
+		
+		//cout<< "Avg= " << average << endl;
 		
 		diff = total - (average * nStudents);
-		cout << "Diff= " << diff << endl;
+		if(diff < 0) {
+			diff = 0 - diff;
+		}
+		//cout<< "Diff= " << diff << endl;
 	}
 	void calculateNumGivers() {
 		for(int i = 0; i < nStudents; ++i) {
@@ -105,25 +119,16 @@ private:
 		for(int i = 0; i < nStudents; ++i) {
 			if(costs[i] <= average) {
 				minMoneyExchanged += (average - costs[i]);
-				cout << "Intermediate money exchanged= " << minMoneyExchanged << endl;
+				//cout<< "Intermediate money exchanged= " << minMoneyExchanged << endl;
 			}
 			else {
 				break;
 			}
 		}
 		
-		// this piece handles the extra pennies left out
+		// this piece handles the extra pennies left out, givers keep the extra!!!
 		if (diff > 0) {
-			diff -= nTakers; // make all the takers take 1 penny more
-			
-			if (diff > 0) { // more pennies left means, the givers get to retain the money [spending less :)]
-				minMoneyExchanged -= (diff > nGivers) ? nGivers : (nGivers - diff);
-				diff -= (diff > nGivers) ? nGivers : (nGivers - diff);
-			}
-			if (diff > 0) { // even more left means a BIG problems ;-)
-				cout << "Something wrong." << endl;
-			}
-			cout << "Final money exchanged= " << minMoneyExchanged << endl;
+			minMoneyExchanged -= diff;
 		}
 	}
 };
