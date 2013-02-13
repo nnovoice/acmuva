@@ -21,7 +21,7 @@ private:
 	int nTripNum;
 public:
 	Trip() { 
-		freopen ("C:\\data\\personal\\programming\\acm\\input_files\\thetrip\\input.txt", "r", stdin); 
+		//freopen ("C:\\data\\personal\\programming\\acm\\input_files\\thetrip\\input.txt", "r", stdin); 
 		nTripNum = 0;
 	}
 	
@@ -126,13 +126,45 @@ private:
 			}
 		}
 		
-		// this piece handles the extra pennies left out, givers keep the extra!!!
-		if (diff > 0) { // more pennies left means, the givers get to retain the money [spending less :)]
-			minMoneyExchanged -= (diff > nGivers) ? nGivers : diff;
-			diff -= (diff > nGivers) ? nGivers : diff;
+		//Still getting WA probably because of the below test case. 
+		//15
+		//0.01
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		//0.03
+		// Expected answer is $0.02
+		// What was missing in the problem statement or was hidden is that the
+		// sharing has be be a fair thing. If there are people who have spent more
+		// then, they get to keep the extra money, otherwise, the people who spent
+		// less get to keep the extra.
+		if (nGivers < nTakers) {
+			if (diff > 0) { // extra pennies are first taken by receivers
+				diff -= (diff > nTakers) ? nTakers : diff;
+			}
+			if (diff > 0) { // more pennies left means, the givers get to retain the money [spending less :)]
+				minMoneyExchanged -= (diff > nGivers) ? nGivers : diff;
+				diff -= (diff > nGivers) ? nGivers : diff;
+			}
 		}
-		if (diff > 0) { // even more left means the receivers receive that much extra
-			diff -= (diff > nTakers) ? nTakers : diff;
+		else {
+			if (diff > 0) { // the givers get to retain the money first [spending less :)]
+				minMoneyExchanged -= (diff > nGivers) ? nGivers : diff;
+				diff -= (diff > nGivers) ? nGivers : diff;
+			}
+			if (diff > 0) { // extra pennies are then taken by receivers
+				diff -= (diff > nTakers) ? nTakers : diff;
+			}
 		}
 	}
 };
