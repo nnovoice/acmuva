@@ -21,7 +21,7 @@ private:
 	int nTripNum;
 public:
 	Trip() { 
-		//freopen ("C:\\data\\personal\\programming\\acm\\input_files\\thetrip\\input.txt", "r", stdin); 
+		freopen ("C:\\data\\personal\\programming\\acm\\input_files\\thetrip\\input.txt", "r", stdin); 
 		nTripNum = 0;
 	}
 	
@@ -103,14 +103,14 @@ private:
 	}
 	void calculateNumGivers() {
 		for(int i = 0; i < nStudents; ++i) {
-			if(costs[i] <= average) {
+			if(costs[i] < average) {
 				++nGivers;
 			}
 		}
 	}
 	void calculateNumTakers() {
 		for(int i = 0; i < nStudents; ++i) {
-			if(costs[i] > average) {
+			if(costs[i] >= average) {
 				++nTakers;
 			}
 		}
@@ -127,8 +127,12 @@ private:
 		}
 		
 		// this piece handles the extra pennies left out, givers keep the extra!!!
-		if (diff > 0) {
-			minMoneyExchanged -= diff;
+		if (diff > 0) { // more pennies left means, the givers get to retain the money [spending less :)]
+			minMoneyExchanged -= (diff > nGivers) ? nGivers : diff;
+			diff -= (diff > nGivers) ? nGivers : diff;
+		}
+		if (diff > 0) { // even more left means the receivers receive that much extra
+			diff -= (diff > nTakers) ? nTakers : diff;
 		}
 	}
 };
