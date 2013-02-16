@@ -12,7 +12,6 @@ int wetlandsCount[MAXDIMENSION][MAXDIMENSION];
 class WetlandsOfFlorida {
 	int nCases;
 	int wetlandsArea;
-	int currentWetlandCount;
 	char input;
 	int row;
 	int col;
@@ -21,10 +20,13 @@ class WetlandsOfFlorida {
 	
 private:
 	void init() {
-		wetlandsArea = 0;
-		currentWetlandCount = 0;
+		rows = 0;
+		cols = 0;
 		row = 0;
 		col = 0;
+	}
+	void initWetLandsArea() {
+		wetlandsArea = 0;
 	}
 	void initWetLandsMap() {
 		memset(wetlandsMap, ' ', sizeof(wetlandsMap[0][0]) * MAXDIMENSION * MAXDIMENSION);
@@ -34,8 +36,9 @@ private:
 	}
 public:
 	WetlandsOfFlorida() { 
-		//freopen("C:\\data\\personal\\programming\\acm\\\WetlandsOfFlorida.txt", "r", stdin); 
+		freopen("C:\\data\\personal\\programming\\acm\\input_files\\wetlandsofflorida\\uva.txt", "r", stdin); 
 		init(); 
+		initWetLandsArea();
 		initWetLandsMap(); 
 		initWetLandsCount();
 	}
@@ -43,18 +46,24 @@ public:
 	}
 
 	void start() {
-		cin >> nCases;
-		
+		scanf("%d", &nCases);
+		printf("%d\n", nCases);
+
 		for (int i = 0; i < nCases; ++i) {
-			cin >> input;
+			scanf("%c", &input);
+			printf("%c", input);
+
 			if (input == '\n') {
+				while((input = getchar()) == '\n') 
+					;
+				cin.putback(input);
 				init();
 				initWetLandsMap();
 				initWetLandsCount();
 				readWetlandsMap();
 			}
 			else {
-				cin.push_back(input);
+				cin.putback(input);
 			}
 			//createWetlandsCount();
 			processCommands();
@@ -65,17 +74,21 @@ private:
 		char ch = ' ';
 		for(int i = 1; i < MAXDIMENSION; ++i) {
 			for(int j = 1; j < MAXDIMENSION; ++j) {
-				cin >> ch;
+				scanf("%c", &ch);
+				printf("%c", ch);
 				if (ch == '\n') {
 					cols = j;
 					break;
 				}
-				if (ch != 'W' || ch != 'L') {
-					cin.push_back(ch);
+				if (ch == 'W' || ch == 'L') {
+					wetlandsMap[i][j] = ch;
+				}
+				else {
+					cin.putback(ch);
 					rows = i;
+					cout << "rows= " << rows << " cols= " << cols << endl;
 					return;
 				}
-				wetlandsMap[i][j] = ch;
 				//cout << wetlandsMap[i][j] << " ";
 			}
 			//cout << endl;
@@ -99,16 +112,21 @@ private:
 	
 
 	void processCommands() {
-		while(cin >> input) {
-			cin.push_back(input);
-			
+		//while(cin >> input) {
+		while ((input = getchar()) != EOF) {
 			if(input == '\n') {
+				cin.putback(input);
 				return;
 			}
 
-			cin >> row >> col;
+			cin.putback(input);
+
+			scanf("%d %d", &row, &col);
+			scanf("%c", &input);
 			
 			initWetLandsCount();
+			
+			initWetLandsArea();
 			
 			getWetlandsCountUsingDFS(row, col);
 			
