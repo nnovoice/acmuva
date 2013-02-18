@@ -1,3 +1,4 @@
+//http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=410
 #define MAXDIMENSION 101
 #define NUMNEIGHBOURS 8
 #include <iostream>
@@ -36,7 +37,7 @@ private:
 	}
 public:
 	WetlandsOfFlorida() { 
-		freopen("C:\\data\\personal\\programming\\acm\\input_files\\wetlandsofflorida\\uva.txt", "r", stdin); 
+		//freopen("C:\\data\\personal\\programming\\acm\\input_files\\wetlandsofflorida\\my.txt", "r", stdin); 
 		init(); 
 		initWetLandsArea();
 		initWetLandsMap(); 
@@ -47,11 +48,11 @@ public:
 
 	void start() {
 		scanf("%d", &nCases);
-		printf("%d\n", nCases);
+		//printf("%d\n", nCases);
 
 		for (int i = 0; i < nCases; ++i) {
 			scanf("%c", &input);
-			printf("%c", input);
+			//printf("%c", input);
 
 			if (input == '\n') {
 				while((input = getchar()) == '\n') 
@@ -67,6 +68,8 @@ public:
 			}
 			//createWetlandsCount();
 			processCommands();
+			
+			cout << endl;
 		}
 	}
 private:
@@ -75,7 +78,7 @@ private:
 		for(int i = 1; i < MAXDIMENSION; ++i) {
 			for(int j = 1; j < MAXDIMENSION; ++j) {
 				scanf("%c", &ch);
-				printf("%c", ch);
+				//printf("%c", ch);
 				if (ch == '\n') {
 					cols = j;
 					break;
@@ -86,7 +89,7 @@ private:
 				else {
 					cin.putback(ch);
 					rows = i;
-					cout << "rows= " << rows << " cols= " << cols << endl;
+					//cout << "rows= " << rows << " cols= " << cols << endl;
 					return;
 				}
 				//cout << wetlandsMap[i][j] << " ";
@@ -109,7 +112,6 @@ private:
 			cout << endl;
 		}
 	}
-	
 
 	void processCommands() {
 		//while(cin >> input) {
@@ -191,9 +193,8 @@ private:
 		int* pCols = new int[NUMNEIGHBOURS];
 		initNeighbourRowsCols(pRows, pCols, i, j);
 
-		if(wetlandsCount[i][j] == 0) {
-			wetlandsCount[i][j] = ++wetlandsArea;
-			//cout << i << " " << j << "cellType:" << wetlandsCount[i][j] << " is part of eagle:" << wetlandsArea << endl;
+		if(wetlandsMap[i][j] == 'W'  && wetlandsCount[i][j] == 0) {
+			//cout << i << " " << j << "cellType:" << wetlandsCount[i][j] << " is part of area:" << wetlandsArea << endl;
 
 			//printwetlandsMap();
 			for(int m = 0; m < NUMNEIGHBOURS; ++m) {
@@ -202,9 +203,14 @@ private:
 
 				if (wetlandsMap[pRows[m]][pCols[m]] == 'W' && wetlandsCount[pRows[m]][pCols[m]] == 0) {
 					//cout << i << " " << j << " neighbour " << pRows[m] << " " << pCols[m] << "is part of eagle:" << wetlandsArea << endl;
+					wetlandsCount[i][j] = ++wetlandsArea;
+					
 					getWetlandsCountUsingDFS(pRows[m], pCols[m]);
 				}
 			}
+		}
+		else {
+			cout << "Error: got a land, instead of water." << endl;
 		}
 		if (pRows != 0) {
 			delete [] pRows;
@@ -222,19 +228,3 @@ int main() {
 	project.start();
 	return 0;
 }
-
-//void createWetlandsCount() {
-	//	for(int i = 1; i <= N; ++i) {
-	//		wetlandsArea = 0;
-	//			for(int j = 1; j <= N; ++j) {
-	//			//cout << "wetlandsCount[" << i << "][" << j << "] is= " << wetlandsCount[i][j] << endl;
-	//			if (wetlandsMap[i][j] == 'W' && wetlandsCount[i][j] == 0) {
-	//				//printwetlandsMap();
-	//				
-	//				//cout << i << " " << j << " " << wetlandsMap[i][j] << "is a part of EAGLE... " << wetlandsArea << endl;
-	//				getWetlandsCountUsingDFS(i, j);
-	//			}
-	//		}
-	//	}
-	//	cout << "Image number " << ++imageNum << " contains " << wetlandsArea << " war eagles." << endl;
-	//}
