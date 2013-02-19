@@ -55,8 +55,10 @@ public:
 			//printf("%c", input);
 
 			if (input == '\n') {
-				while((input = getchar()) == '\n') 
-					;
+				while((scanf("%c", &input)) != EOF) {
+					if (input != '\n')
+						break;
+				}
 				cin.putback(input);
 				init();
 				initWetLandsMap();
@@ -69,7 +71,8 @@ public:
 			//createWetlandsCount();
 			processCommands();
 			
-			cout << endl;
+			if ((i + 1) != nCases)
+				cout << endl;
 		}
 	}
 private:
@@ -97,25 +100,8 @@ private:
 			////cout << endl;
 		}
 	}
-	void printwetlandsMap() {
-		for(int i = 1; i <= rows; ++i) {
-			for(int j = 1; j <= cols; ++j) {
-				//cout << wetlandsMap[i][j];
-			}
-			//cout << endl;
-		}
-		//cout << "Counts:" << endl;
-		for(int i = 1; i <= rows; ++i) {
-			for(int j = 1; j <= cols; ++j) {
-				//cout << wetlandsCount[i][j];
-			}
-			//cout << endl;
-		}
-	}
-
 	void processCommands() {
-		//while(cin >> input) {
-		while ((input = getchar()) != EOF) {
+		while ((scanf("%c", &input)) != EOF) {
 			if(input == '\n') {
 				cin.putback(input);
 				return;
@@ -150,15 +136,6 @@ private:
 		return true;
 	}
 
-	void pushStack(int stack[MAXDIMENSION*MAXDIMENSION*NUMNEIGHBOURS][2], int* pStackCount, int r, int c) {
-		//if(wetlandsMap[r][c] == 'W'  && wetlandsCount[r][c] == 0) {
-			//cout << "Pusing [" << r << "," << c << "] onto to the stack at: " << *pStackCount << endl;
-			stack[*pStackCount][0] = (r); 
-			stack[*pStackCount][1] = (c); 
-			++(*pStackCount);
-		//}
-	}
-
 	void getWetlandsCountUsingDFS(int i, int j) {
 		//cout << "Finding wetlands for [" << i << "," << j << "]" << endl;
 		int stack[MAXDIMENSION*MAXDIMENSION*NUMNEIGHBOURS][2];
@@ -181,19 +158,16 @@ private:
 			if(wetlandsMap[r][c] == 'W'  && wetlandsCount[r][c] == 0) {
 				wetlandsCount[r][c] = ++wetlandsArea;
 				//cout << "[" << r << "," << c << "] is a wetland." << endl;
-				//#define pushStack(i,j) stack[stackCount][0] = (i); stack[stackCount][1] = (j); ++stackCount
-					pushStack(stack, &stackCount, r - 1, c - 1);
-					pushStack(stack, &stackCount, r - 1, c);
-					pushStack(stack, &stackCount, r - 1, c + 1);
-					pushStack(stack, &stackCount, r,     c + 1);
-					pushStack(stack, &stackCount, r + 1, c + 1);
-					pushStack(stack, &stackCount, r + 1, c);
-					pushStack(stack, &stackCount, r + 1, c - 1);
-					pushStack(stack, &stackCount, r,     c - 1);
-				//#undef pushStack
-			}
-			else {
-				//cout << "[" << r << "," << c << "] has: " << wetlandsMap[r][c] << " count= " << wetlandsCount[r][c] << endl;
+				#define pushStack(i,j) stack[stackCount][0] = (i); stack[stackCount][1] = (j); ++stackCount
+					pushStack(r - 1, c - 1);
+					pushStack(r - 1, c);
+					pushStack(r - 1, c + 1);
+					pushStack(r,     c + 1);
+					pushStack(r + 1, c + 1);
+					pushStack(r + 1, c);
+					pushStack(r + 1, c - 1);
+					pushStack(r,     c - 1);
+				#undef pushStack
 			}
 		}
 	}
