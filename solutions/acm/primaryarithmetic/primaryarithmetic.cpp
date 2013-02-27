@@ -1,5 +1,5 @@
 //PC/UVa IDs: 110501/10035, Popularity: A, Success rate: average Level: 1
-#define MAXLEN 11
+#define MAXLEN 10
 
 #include <iostream>
 #include <cstdio>
@@ -34,7 +34,7 @@ private:
 	}
 public:
 	PrimaryArithmetic() { 
-		//freopen("C:\\data\\personal\\programming\\acm\\input_files\\primaryarithmetic\\uva.txt", "r", stdin);
+		freopen("C:\\data\\personal\\programming\\acm\\input_files\\primaryarithmetic\\uva.txt", "r", stdin);
 		nTestCases = 0;
 	}
 	int process() {
@@ -51,7 +51,7 @@ public:
 
 		return 0;
 	}
-	int numCarryOvers() {
+	void numCarryOvers() {
 		constructReverseNumbers();
 		int len1 = strlen(num1);
 		int len2 = strlen(num2);
@@ -87,8 +87,7 @@ public:
 		else {
 			cout << nCarryOvers << " carry operations.";
 		}
-		
-		return 0;
+		//cout << endl;
 	}
 };
 
