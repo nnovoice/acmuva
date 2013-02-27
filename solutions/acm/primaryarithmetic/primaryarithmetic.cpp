@@ -61,7 +61,7 @@ public:
 		int curCarry = 0;
 		int curTotal = 0;
 		for (int i = 0; i < minLen; ++i) {
-			curTotal = curCarry + (num1[i] - '0') + (num2[i] - '0');
+			curTotal = curCarry + (revNum1[i] - '0') + (revNum2[i] - '0');
 			curCarry = (curTotal >= 10) ? 1 : 0;
 			nCarryOvers += curCarry;
 		}
