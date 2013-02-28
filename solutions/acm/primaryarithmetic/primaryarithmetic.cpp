@@ -2,81 +2,66 @@
 #define MAXLEN 10
 
 #include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <string.h>
+//#include <cstdio>
+//#include <algorithm>
+//#include <string.h>
 
 using namespace std;
 
 class PrimaryArithmetic {
 private:
-	char num1[MAXLEN];
-	char num2[MAXLEN];
-	char revNum1[MAXLEN];
-	char revNum2[MAXLEN];
-	int nCarryOvers;
-	int nTestCases;
+	unsigned int num1;
+	unsigned int num2;
+	unsigned int nCarryOvers;
+	unsigned int nTestCases;
 private:
 	void init() {
-		memset(revNum1, '\0', sizeof(char) * MAXLEN);
-		memset(revNum2, '\0', sizeof(char) * MAXLEN);
 		nCarryOvers = 0;
-	}
-	void constructReverseNumbers() {
-		constructReverseNumber(num1, revNum1);
-		constructReverseNumber(num2, revNum2);
-	}
-	void constructReverseNumber(char num[MAXLEN], char revNum[MAXLEN]) {
-		int len = strlen(num);
-		for (int i = len - 1; i >= 0; --i) {
-			revNum[len - i - 1] = num[i];
-		}
 	}
 public:
 	PrimaryArithmetic() { 
-		freopen("C:\\data\\personal\\programming\\acm\\input_files\\primaryarithmetic\\uva.txt", "r", stdin);
+		//freopen("C:\\data\\personal\\programming\\acm\\input_files\\primaryarithmetic\\uva.txt", "r", stdin);
 		nTestCases = 0;
 	}
 	int process() {
 		while (cin >> num1 >> num2) {
 			++nTestCases;
-			if (strcmp(num1, "0") == 0 && strcmp(num2, "0") == 0) {
+			if (num1 == 0 && num2 == 0) {
 				break;
 			}
 
 			init();
 
 			numCarryOvers();
+
+			printCarryOvers();
 		}
 
 		return 0;
 	}
 	void numCarryOvers() {
-		constructReverseNumbers();
-		int len1 = strlen(num1);
-		int len2 = strlen(num2);
-		int minLen = (len1 < len2) ? len1 : len2;
-		char* pNumWithMoreDigits = (len1 < len2) ? num2 : num1;
-
-		int curCarry = 0;
-		int curTotal = 0;
-		for (int i = 0; i < minLen; ++i) {
-			curTotal = curCarry + (revNum1[i] - '0') + (revNum2[i] - '0');
-			curCarry = (curTotal >= 10) ? 1 : 0;
-			nCarryOvers += curCarry;
+		unsigned int* pBiggerNum = (num1 > num2) ? &num1 : &num2;
+		unsigned int digit1 = 0;
+		unsigned int digit2 = 0;
+		unsigned int carry = 0;
+		unsigned int digitsTotal = 0;
+		while (*pBiggerNum) 
+		{
+			digit1 = num1 % 10;
+			digit2 = num2 % 10;
+			digitsTotal = carry + digit1 + digit2;
+			carry = (digitsTotal >= 10) ? 1 : 0;
+			if (carry == 1) {
+				++nCarryOvers;
+			}
+			num1 /= 10;
+			num2 /= 10;
 		}
-
-		pNumWithMoreDigits += minLen;
-		while (*pNumWithMoreDigits != '\0') {
-			curTotal = curCarry + (*pNumWithMoreDigits - '0');
-			curCarry = (curTotal >= 10) ? 1 : 0;
-			nCarryOvers += curCarry;
-			++pNumWithMoreDigits;
-		}
-
-		if (nTestCases > 1) {
+	}
+	void printCarryOvers() {
+		/*if (nTestCases > 1) {
 			cout << endl;
-		}
+		}*/
 
 		if (nCarryOvers == 0) {
 			cout << "No carry operation.";
@@ -87,7 +72,7 @@ public:
 		else {
 			cout << nCarryOvers << " carry operations.";
 		}
-		//cout << endl;
+		cout << endl;
 	}
 };
 
