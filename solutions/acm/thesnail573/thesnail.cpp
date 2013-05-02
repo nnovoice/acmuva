@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
 	int fatigueDist = 0;
 
-	freopen("C:\\data\\personal\\programming\\acm\\input_files\\thesnail573\\input.txt", "r", stdin); 
+	//freopen("C:\\data\\personal\\programming\\acm\\input_files\\thesnail573\\input.txt", "r", stdin); 
 
 	while (cin >> targetHeight >> climbingHeight >> slidingHeight >> fatigueFactor) {
 		if (targetHeight == 0) {
@@ -25,33 +25,41 @@ int main(int argc, char* argv[])
 
 		fatigueDist = fatigueFactor * climbingHeight;
 
-		day = 0;
+		day = 1;
 		totalHeight = climbingHeight;
-		if (totalHeight >= targetHeight) {
-			cout << "success on day " << ++day << endl;
+		if (totalHeight > targetHeight) {
+			cout << "success on day " << day << endl;
 			break;
 		}
 
-		targetHeight *= 100;
-		climbingHeight *= 100;
-		slidingHeight *= 100;
-		totalHeight *= 100;
-		climbedHeight = climbingHeight;
+		targetHeight	*= 100;
+		climbingHeight	*= 100;
+		slidingHeight	*= 100;
+		totalHeight		*= 100;
+		climbedHeight	= climbingHeight;
 
-		while (totalHeight > 0) {
+		totalHeight -= slidingHeight;
+
+		while (totalHeight >= 0) {
 			++day;
-			
+		
+			//cout << totalHeight << ",";
 			climbedHeight = (climbedHeight - fatigueDist);
 			if (climbedHeight < 0)
 				climbedHeight = 0;
 
+			//cout << climbedHeight << ",";
+
 			totalHeight += climbedHeight;
+
+			//cout << totalHeight << ",";
 			
-			if (totalHeight >= targetHeight) {
+			if (totalHeight > targetHeight) {
 				break;
 			}
 			
 			totalHeight -= slidingHeight;
+			//cout << totalHeight << "," << endl;
 		}
 		
 		if (totalHeight > 0) {
