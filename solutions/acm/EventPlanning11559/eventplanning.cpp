@@ -2,7 +2,6 @@
 #define MAXHOTELS 18
 #include <iostream>
 #include <algorithm>
-#include <string.h>
 using namespace std;
 
 //1 <= N <= 200    N- number of participants
@@ -25,34 +24,24 @@ int main()
 	bool isHotelAvailable = false;
 
 	while (cin >> numParticipants >> budget >> numHotels >> weeksToChooseFrom) {
-		//cout << "Debug: " << numParticipants << " " << budget << " " << numHotels << " " << weeksToChooseFrom << endl;
-		memset(prices, 400 * 10000, sizeof(prices));
 		numPrices = 0;
 		
 		for (int i = 0; i < numHotels; ++i) {
 			isHotelAvailable = false;
 			cin >> pricePerPerson;
-			//cout << "Debug: The price per person " << pricePerPerson << " " << endl;
-			//cout << "Debug: num weeks to choose from: " << weeksToChooseFrom << endl;
-			//cout << "Debug: The available beds: " << " ";
 			for (int j = 0; j < weeksToChooseFrom; ++j) {
 				cin >> numAvailableBeds;
-				//cout << numAvailableBeds << " ";
 				if (isHotelAvailable == false && numAvailableBeds >= numParticipants) {
 					isHotelAvailable = true;
 				}
 			}
-			//cout << "Debug: end" << endl;
 			if (isHotelAvailable) {
 				prices[numPrices++] = numParticipants * pricePerPerson;
 			}
 		}
 		sort (prices, prices + numPrices);
-		/*for (int i = 0; i < numPrices; ++i) {
-			cout << "Debug: The prices are " << prices[i] << " ";
-		}
-		cout << "Debug: end" << endl;*/
-		if (prices[0] <= budget) {
+		
+		if (numPrices > 0 && prices[0] <= budget) {
 			cout << prices[0] << endl;
 		}
 		else {
