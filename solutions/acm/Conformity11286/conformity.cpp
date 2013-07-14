@@ -19,7 +19,7 @@ int main()
     int numFroshTakingPopularCourses = 0;
     int mostPopularCourseScore = 0;
 
-    freopen ("C:\\data\\personal\\programming\\acm\\input_files\\Conformity11286\\input.txt", "r", stdin);
+    //freopen ("C:\\data\\personal\\programming\\acm\\input_files\\Conformity11286\\input.txt", "r", stdin);
 
     while (cin >> nFrosh) {
         if (nFrosh == 0) break;
