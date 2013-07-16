@@ -1,3 +1,4 @@
+/* UVa 11572 - Unique Snowflakes*/
 #include <iostream>
 #include <map>
 using namespace std;
@@ -15,10 +16,17 @@ int main()
         cin >> nSnowFlakes;
         for (unsigned int i = 0; i < nSnowFlakes; ++i) {
             cin >> snowFlake;
+            if (snowFlakesMap[snowFlake] == 1) {
+                if (nSnowFlakes < snowFlakesMap.size()) {
+                    nSnowFlakes = snowFlakesMap.size();
+                }
+                snowFlakesMap.clear();
+            }
+
             snowFlakesMap[snowFlake] += 1;
         }
 
-        cout << snowFlakesMap.size() << endl;
+        cout << nSnowFlakes << endl;
     }
     return 0;
 }
