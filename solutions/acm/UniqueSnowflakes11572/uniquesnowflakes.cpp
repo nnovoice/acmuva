@@ -12,6 +12,7 @@ int main()
 
     cin >> nCases;
     while (nCases--) {
+        nSnowFlakes = 0;
         snowFlakesMap.clear();
         cin >> nSnowFlakes;
         for (unsigned int i = 0; i < nSnowFlakes; ++i) {
