@@ -1,3 +1,4 @@
+/* UVa 543 - Goldbach's Conjecture */
 #define NUMMAX 1000001
 #include <iostream>
 #include <string.h>
