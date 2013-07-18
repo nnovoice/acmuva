@@ -9,25 +9,29 @@ int main()
     map<unsigned int, unsigned int> snowFlakesMap;
     unsigned int nSnowFlakes = 0;
     unsigned int snowFlake = 0;
+    unsigned int mMaxSnowFlakes = 0;
 
     cin >> nCases;
     while (nCases--) {
-        nSnowFlakes = 0;
+        mMaxSnowFlakes = 0;
         snowFlakesMap.clear();
         cin >> nSnowFlakes;
         for (unsigned int i = 0; i < nSnowFlakes; ++i) {
             cin >> snowFlake;
             if (snowFlakesMap[snowFlake] == 1) {
-                if (nSnowFlakes < snowFlakesMap.size()) {
-                    nSnowFlakes = snowFlakesMap.size();
+                if (mMaxSnowFlakes < snowFlakesMap.size()) {
+                    mMaxSnowFlakes = snowFlakesMap.size();
                 }
-                snowFlakesMap.clear();
+                //snowFlakesMap.clear();
+            }
+            else {
+                snowFlakesMap[snowFlake] += 1;
             }
 
-            snowFlakesMap[snowFlake] += 1;
+
         }
 
-        cout << nSnowFlakes << endl;
+        cout << mMaxSnowFlakes << endl;
     }
     return 0;
 }
