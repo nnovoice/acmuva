@@ -1,42 +1,60 @@
 /* UVa 11572 - Unique Snowflakes*/
 #include <iostream>
 #include <map>
+#include <vector>
 using namespace std;
 
 int main()
 {
     unsigned int nCases = 0;
     map<unsigned int, unsigned int> snowFlakesMap;
-    unsigned int nSnowFlakes = 0;
+    vector<unsigned int> snowFlakesVector;
+    unsigned int nInputSnowflakes = 0;
+    unsigned int nSnowflakesInCurrentPackage = 0;
     unsigned int snowFlake = 0;
     unsigned int nMaxSnowFlakes = 0;
-    unsigned int diff = 0;
-    int leftElem = 0;
-    int rightElem = 0;
+    unsigned int snowFlakeIndex = 0;
 
     cin >> nCases;
     while (nCases--) {
         nMaxSnowFlakes = 0;
         snowFlakesMap.clear();
-        leftElem = 1;
 
-        cin >> nSnowFlakes;
+        cin >> nInputSnowflakes;
 
-        for (unsigned int i = 1; i <= nSnowFlakes; ++i) {
+        for (unsigned int i = 1; i <= nInputSnowflakes; ++i) {
             cin >> snowFlake;
-            rightElem = i;
+
+            snowFlakesVector.push_back(snowFlake);
 
             if (snowFlakesMap[snowFlake] != 0) {
-                diff = rightElem - leftElem;
-                cout << "Debug: " << "Saw snowflake= " << snowFlake << " at " << snowFlakesMap[snowFlake] << " with diff= " << diff << endl;
-                if (diff > nMaxSnowFlakes) {
-                    nMaxSnowFlakes = diff;
+                //cout << "Debug: " << "Saw snowflake= " << snowFlake << " at " << snowFlakesMap[snowFlake] << endl;
+
+                nSnowflakesInCurrentPackage = snowFlakesMap.size();
+                for (; snowFlakesVector[snowFlakeIndex] != snowFlake; ++snowFlakeIndex) {
+                    //cout << "Debug: " << "Index= " << snowFlakeIndex << " snowFlake= " << snowFlakesVector[snowFlakeIndex] << endl;
+                    snowFlakesMap.erase(snowFlakesVector[snowFlakeIndex]);
                 }
-                leftElem = snowFlakesMap[snowFlake] + 1;
+
+                if (snowFlakesVector[snowFlakeIndex] == snowFlake)
+                    ++snowFlakeIndex;
+
+                //cout << "Debug: " << "Index= " << snowFlakeIndex << " snowFlake= " << snowFlakesVector[snowFlakeIndex] << endl;
+                snowFlakesMap.erase(snowFlake);
+
+                if (nMaxSnowFlakes < nSnowflakesInCurrentPackage) {
+                    nMaxSnowFlakes = nSnowflakesInCurrentPackage;
+                    //cout << "Debug: " << "nMaxSnowflakes = " << nMaxSnowFlakes << endl;
+                }
+            }
+            else {
+                if (nMaxSnowFlakes < snowFlakesMap.size()) {
+                    nMaxSnowFlakes = snowFlakesMap.size();
+                }
             }
 
             snowFlakesMap[snowFlake] = i;
-            cout << "Debug: " << snowFlake << " is at index= " << snowFlakesMap[snowFlake] << endl;
+            //cout << "Debug: " << snowFlake << " is at index= " << snowFlakesMap[snowFlake] << endl;
         }
 
         cout << nMaxSnowFlakes << endl;
