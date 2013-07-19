@@ -9,29 +9,37 @@ int main()
     map<unsigned int, unsigned int> snowFlakesMap;
     unsigned int nSnowFlakes = 0;
     unsigned int snowFlake = 0;
-    unsigned int mMaxSnowFlakes = 0;
+    unsigned int nMaxSnowFlakes = 0;
+    unsigned int diff = 0;
+    int leftElem = 0;
+    int rightElem = 0;
 
     cin >> nCases;
     while (nCases--) {
-        mMaxSnowFlakes = 0;
+        nMaxSnowFlakes = 0;
         snowFlakesMap.clear();
+        leftElem = 1;
+
         cin >> nSnowFlakes;
-        for (unsigned int i = 0; i < nSnowFlakes; ++i) {
+
+        for (unsigned int i = 1; i <= nSnowFlakes; ++i) {
             cin >> snowFlake;
-            if (snowFlakesMap[snowFlake] == 1) {
-                if (mMaxSnowFlakes < snowFlakesMap.size()) {
-                    mMaxSnowFlakes = snowFlakesMap.size();
+            rightElem = i;
+
+            if (snowFlakesMap[snowFlake] != 0) {
+                diff = rightElem - leftElem;
+                cout << "Debug: " << "Saw snowflake= " << snowFlake << " at " << snowFlakesMap[snowFlake] << " with diff= " << diff << endl;
+                if (diff > nMaxSnowFlakes) {
+                    nMaxSnowFlakes = diff;
                 }
-                //snowFlakesMap.clear();
-            }
-            else {
-                snowFlakesMap[snowFlake] += 1;
+                leftElem = snowFlakesMap[snowFlake] + 1;
             }
 
-
+            snowFlakesMap[snowFlake] = i;
+            cout << "Debug: " << snowFlake << " is at index= " << snowFlakesMap[snowFlake] << endl;
         }
 
-        cout << mMaxSnowFlakes << endl;
+        cout << nMaxSnowFlakes << endl;
     }
     return 0;
 }
