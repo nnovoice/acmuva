@@ -4,56 +4,92 @@
 #include <vector>
 using namespace std;
 
+void printFullVector(vector<unsigned int> snowflakesVector)
+{
+    //cout << "Debug: " << "Full Vector contents: ";
+    for (unsigned int i = 0; i < snowflakesVector.size(); ++i)
+        cout << snowflakesVector[i] << " ";
+    cout << endl;
+}
+
+void printVector(vector<unsigned int> snowflakesVector, unsigned int index)
+{
+    //cout << "Debug: " << "Vector contents from index: " << index << ": ";
+    for (unsigned int i = index; i < snowflakesVector.size(); ++i)
+        cout << snowflakesVector[i] << " ";
+    cout << endl;
+}
+
+void printMap(map<unsigned int, unsigned int> snowflakesMap)
+{
+    //cout << "Debug: " << "Full Map contents: ";
+
+    map<unsigned int, unsigned int>::iterator snowflakesMapIter = snowflakesMap.begin();
+    map<unsigned int, unsigned int>::iterator snowflakesMapEndIter = snowflakesMap.end();
+
+    for (;snowflakesMapIter != snowflakesMapEndIter; ++snowflakesMapIter) {
+            cout << (*snowflakesMapIter).first << ":" << (*snowflakesMapIter).second << " ";
+    }
+    cout << endl;
+}
+
 int main()
 {
     unsigned int nCases = 0;
     map<unsigned int, unsigned int> snowFlakesMap;
     vector<unsigned int> snowFlakesVector;
     unsigned int nInputSnowflakes = 0;
-    unsigned int nSnowflakesInCurrentPackage = 0;
+    unsigned int nPossibleSnowflakesInCurrentPackage = 0;
     unsigned int snowFlake = 0;
     unsigned int nMaxSnowFlakes = 0;
-    unsigned int snowFlakeIndex = 0;
+    unsigned int lastSnowFlakeIndex = 0;
 
     cin >> nCases;
-    while (nCases--) {
+    for (unsigned int cases = 0; cases < nCases; ++cases) {
         nMaxSnowFlakes = 0;
         snowFlakesMap.clear();
+        snowFlakesVector.clear();
+        lastSnowFlakeIndex = 0;
 
         cin >> nInputSnowflakes;
 
-        for (unsigned int i = 1; i <= nInputSnowflakes; ++i) {
+        for (unsigned int index = 1; index <= nInputSnowflakes; ++index) {
             cin >> snowFlake;
 
             snowFlakesVector.push_back(snowFlake);
+            //cout << "Debug: " << "Got new snowflake= " << snowFlake << endl;
+            //printFullVector(snowFlakesVector);
+            //printMap(snowFlakesMap);
 
             if (snowFlakesMap[snowFlake] != 0) {
                 //cout << "Debug: " << "Saw snowflake= " << snowFlake << " at " << snowFlakesMap[snowFlake] << endl;
+                printVector(snowFlakesVector, lastSnowFlakeIndex);
 
-                nSnowflakesInCurrentPackage = snowFlakesMap.size();
-                for (; snowFlakesVector[snowFlakeIndex] != snowFlake; ++snowFlakeIndex) {
-                    //cout << "Debug: " << "Index= " << snowFlakeIndex << " snowFlake= " << snowFlakesVector[snowFlakeIndex] << endl;
-                    snowFlakesMap.erase(snowFlakesVector[snowFlakeIndex]);
+                nPossibleSnowflakesInCurrentPackage = snowFlakesMap.size();
+
+                for (unsigned int j = lastSnowFlakeIndex; j <= snowFlakesMap[snowFlake]; ++j) {
+                    //cout << "Debug: " << "Index= " << j << " snowFlake= " << snowFlakesVector[j] << endl;
+                    if (j == snowFlakesMap[snowFlake]) {
+                        lastSnowFlakeIndex = snowFlakesMap[snowFlake] + 1;
+                    }
+                    snowFlakesMap.erase(snowFlakesVector[j]);
                 }
 
-                if (snowFlakesVector[snowFlakeIndex] == snowFlake)
-                    ++snowFlakeIndex;
+                //printVector(snowFlakesVector, lastSnowFlakeIndex);
+                //printMap(snowFlakesMap);
 
-                //cout << "Debug: " << "Index= " << snowFlakeIndex << " snowFlake= " << snowFlakesVector[snowFlakeIndex] << endl;
-                snowFlakesMap.erase(snowFlake);
-
-                if (nMaxSnowFlakes < nSnowflakesInCurrentPackage) {
-                    nMaxSnowFlakes = nSnowflakesInCurrentPackage;
+                //cout << "Debug: " << "Index= " << lastSnowFlakeIndex << " snowFlake= " << snowFlakesVector[lastSnowFlakeIndex] << endl;
+                if (nMaxSnowFlakes < nPossibleSnowflakesInCurrentPackage) {
+                    nMaxSnowFlakes = nPossibleSnowflakesInCurrentPackage;
                     //cout << "Debug: " << "nMaxSnowflakes = " << nMaxSnowFlakes << endl;
                 }
             }
-            else {
-                if (nMaxSnowFlakes < snowFlakesMap.size()) {
-                    nMaxSnowFlakes = snowFlakesMap.size();
-                }
-            }
 
-            snowFlakesMap[snowFlake] = i;
+            snowFlakesMap[snowFlake] = index;
+
+            if (nMaxSnowFlakes < snowFlakesMap.size()) {
+                nMaxSnowFlakes = snowFlakesMap.size();
+            }
             //cout << "Debug: " << snowFlake << " is at index= " << snowFlakesMap[snowFlake] << endl;
         }
 
