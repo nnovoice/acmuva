@@ -1,24 +1,37 @@
 /* UVa 11572 - Unique Snowflakes*/
+#define MAXSNOWFLAKES 1000002
 #include <iostream>
 #include <map>
-#include <vector>
+#include <string.h>
+#include <cstdio>
 using namespace std;
 
-void printFullVector(vector<unsigned int> snowflakesVector)
+unsigned int snowFlakesVector[MAXSNOWFLAKES];
+//unsigned int snowFlakesArr[MAXSNOWFLAKES];
+
+//void printFullVector(vector<unsigned int> snowflakesVector)
+//{
+//    //cout << "Debug: " << "Full Vector contents: ";
+//    for (unsigned int i = 0; i < snowflakesVector.size(); ++i)
+//        cout << snowflakesVector[i] << " ";
+//    cout << endl;
+//}
+
+void printFullVector(unsigned int snowflakesVector[MAXSNOWFLAKES], unsigned int index)
 {
     //cout << "Debug: " << "Full Vector contents: ";
-    for (unsigned int i = 0; i < snowflakesVector.size(); ++i)
+    for (unsigned int i = 1; i <= index; ++i)
         cout << snowflakesVector[i] << " ";
     cout << endl;
 }
 
-void printVector(vector<unsigned int> snowflakesVector, unsigned int index)
-{
-    //cout << "Debug: " << "Vector contents from index: " << index << ": ";
-    for (unsigned int i = index; i < snowflakesVector.size(); ++i)
-        cout << snowflakesVector[i] << " ";
-    cout << endl;
-}
+//void printVector(vector<unsigned int> snowflakesVector, unsigned int index)
+//{
+//    //cout << "Debug: " << "Vector contents from index: " << index << ": ";
+//    for (unsigned int i = index; i < snowflakesVector.size(); ++i)
+//        cout << snowflakesVector[i] << " ";
+//    cout << endl;
+//}
 
 void printMap(map<unsigned int, unsigned int> snowflakesMap)
 {
@@ -35,9 +48,11 @@ void printMap(map<unsigned int, unsigned int> snowflakesMap)
 
 int main()
 {
+    //freopen ("C:\\data\\personal\\programming\\acm\\input_files\\UniqueSnowFlakes11572\\max.txt", "r", stdin);
+
     unsigned int nCases = 0;
     map<unsigned int, unsigned int> snowFlakesMap;
-    vector<unsigned int> snowFlakesVector;
+
     unsigned int nInputSnowflakes = 0;
     unsigned int nPossibleSnowflakesInCurrentPackage = 0;
     unsigned int snowFlake = 0;
@@ -48,22 +63,23 @@ int main()
     for (unsigned int cases = 0; cases < nCases; ++cases) {
         nMaxSnowFlakes = 0;
         snowFlakesMap.clear();
-        snowFlakesVector.clear();
-        lastSnowFlakeIndex = 0;
+        memset (snowFlakesVector, 0, sizeof(unsigned int) * MAXSNOWFLAKES);
+        lastSnowFlakeIndex = 1;
 
         cin >> nInputSnowflakes;
 
         for (unsigned int index = 1; index <= nInputSnowflakes; ++index) {
             cin >> snowFlake;
 
-            snowFlakesVector.push_back(snowFlake);
+            //snowFlakesVector.push_back(snowFlake);
+            snowFlakesVector[index] = snowFlake;
             //cout << "Debug: " << "Got new snowflake= " << snowFlake << endl;
-            //printFullVector(snowFlakesVector);
+            //printFullVector(snowFlakesVector, index);
             //printMap(snowFlakesMap);
 
             if (snowFlakesMap[snowFlake] != 0) {
                 //cout << "Debug: " << "Saw snowflake= " << snowFlake << " at " << snowFlakesMap[snowFlake] << endl;
-                printVector(snowFlakesVector, lastSnowFlakeIndex);
+                //printVector(snowFlakesVector, lastSnowFlakeIndex);
 
                 nPossibleSnowflakesInCurrentPackage = snowFlakesMap.size();
 
