@@ -25,10 +25,10 @@ int main()
             currentCost = numbers.top();
             numbers.pop();
 
-            if (numbers.empty() == false) {
-                currentCost += numbers.top();
-                numbers.pop();
+            currentCost += numbers.top();
+            numbers.pop();
 
+            if (numbers.empty() == false) {
                 totalCost += currentCost;
                 numbers.push(currentCost);
             }
