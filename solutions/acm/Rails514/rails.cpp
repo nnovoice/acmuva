@@ -6,13 +6,22 @@
 #include <cstdio>
 using namespace std;
 
+void makeEmpty(queue<int>& expectedOrder, stack<int>& stationCoaches)
+{
+    while (expectedOrder.empty() == false)
+        expectedOrder.pop();
+
+    while (stationCoaches.empty() == false)
+        stationCoaches.pop();
+}
+
 int main()
 {
     int nCoaches = 0;
     int coach = 0;
     int coachNum = 1;
     int coachToMove = 0;
-    bool haveCoachesToProcess = true;
+    bool haveCoachesToMove = true;
 
     queue<int> expectedOrder;
     stack<int> stationCoaches;
@@ -22,40 +31,36 @@ int main()
     while (cin >> nCoaches) {
         if (nCoaches == 0) break;
 
-        if (haveCoachesToProcess == false)
+        if (haveCoachesToMove == false)
             cout << endl;
 
         while (1) {
-            haveCoachesToProcess = true;
+            haveCoachesToMove = true;
             coachNum = 1;
 
-            while (expectedOrder.empty() == false)
-                expectedOrder.pop();
-
-            while (stationCoaches.empty() == false)
-                stationCoaches.pop();
+            makeEmpty(expectedOrder, stationCoaches);
 
             for (int i = 0; i < nCoaches; ++i) {
                 cin >> coach;
 
                 if (coach == 0) {
-                    haveCoachesToProcess = false;
-                    //cout << endl;
+                    haveCoachesToMove = false;
                     break;
                 }
 
                 expectedOrder.push(coach);
             }
 
-            if (haveCoachesToProcess == false)
+            if (haveCoachesToMove == false)
                 break;
 
             while (expectedOrder.empty() == false) {
                 coachToMove = expectedOrder.front();
                 expectedOrder.pop();
 
-                for (; coachNum <= coachToMove; ++coachNum) {
+                while (coachNum <= coachToMove) {
                     stationCoaches.push(coachNum);
+                    ++coachNum;
                 }
 
                 if (stationCoaches.empty() == false && stationCoaches.top() == coachToMove) {
@@ -66,11 +71,8 @@ int main()
                 }
             }
 
-            if (stationCoaches.empty() == true) {
-                if (expectedOrder.empty() == true)
-                    cout << "Yes" << endl;
-                else
-                    cout << "No" << endl;
+            if ((stationCoaches.empty() == true) && (expectedOrder.empty() == true)) {
+                 cout << "Yes" << endl;
             }
             else {
                 cout << "No" << endl;
