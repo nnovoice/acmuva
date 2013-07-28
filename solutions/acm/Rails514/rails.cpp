@@ -31,8 +31,8 @@ int main()
     while (cin >> nCoaches) {
         if (nCoaches == 0) break;
 
-        if (haveCoachesToMove == false)
-            cout << endl;
+//        if (haveCoachesToMove == false)
+//            cout << endl;
 
         while (1) {
             haveCoachesToMove = true;
@@ -43,8 +43,9 @@ int main()
             for (int i = 0; i < nCoaches; ++i) {
                 cin >> coach;
 
-                if (coach == 0) {
+                if (i == 0 && coach == 0) {
                     haveCoachesToMove = false;
+                    cout << endl;
                     break;
                 }
 
