@@ -58,9 +58,11 @@ int main()
             }
         }
 
+        // pattern looks like odd numbers
         nTimesLToR = getTimesToMoveFerry (leftBankCars, nFerryLength);
         nTimesLToR = (nTimesLToR > 0) ? ((2 * nTimesLToR) - 1) : 0;
 
+        // pattern looks like even numbers
         nTimesRtoL = getTimesToMoveFerry (rightBankCars, nFerryLength);
         nTimesRtoL *= 2;
 
