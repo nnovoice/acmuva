@@ -4,12 +4,14 @@
 // 2: failed, probably due to the center of the list calculation. have to find out.
 //    2: failed because C*2 and C*2-1 if greater than num_primes, was printing junk.
 // 3: another failed attempt. i have to subdue my urge to submit solutions :-)
-
+// 4: cleaned up code, tested with many cases, got WA :-)
+// 5: Got AC: had to output the '\n' characters after each test case
 #include <iostream>
 using namespace std;
 
 const int NUMMAX = 1000;
-int primes[] = {1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+const int TOTALPRIMES = 169;
+int primes[TOTALPRIMES] = {1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
                 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
                 73, 79, 83, 89, 97, 101, 103, 107, 109,
                 113, 127, 131, 137, 139, 149, 151, 157,
@@ -33,56 +35,51 @@ int primes[] = {1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
 
 int main()
 {
+    //int totalPrimes = (int) sizeof(primes); // some issue here...this gives out 676
 	int N = 0, C = 0;
 	int i = 0, num_primes = 0;
+	int startIndex = 0;
+	int endIndex = 0;
+	int midIndex = 0;
 
 	int ninputs = 0;
 	while ( cin >> N >> C )
 	{
-		if ( ninputs++ ) // put endl only after 1 input
-			cout << endl;
-
 		cout << N << " " << C << ":";
 
-		// find the number of primes <= N
-		for ( i = 0; primes[i] <= N; ++i)
-			; // at the end, i equals number of primes <= N
+        //cout << "Debug: " << "total primes= " << TOTALPRIMES << endl;
+        for ( i = 0; i < TOTALPRIMES; ++i) {
+            if (primes[i] > N)
+                break;
+        }
 
-		num_primes = i;
+		num_primes = i; // slightly suble :( // at the end, i equals number of primes <= N
+		//cout << "Debug: " << "Num primes= " << num_primes << endl;
+
 		if ( C >= num_primes || ( (2*C) >= num_primes ) || ( (2*C-1) >= num_primes) ) // print full list?
 		{
 			for ( int j = 0; j < num_primes; ++j )
 				cout << " " << primes[j];
 		}
-		else if ( !( num_primes % 2 ) )
-		{
-			int mid = num_primes / 2;
-			int start = mid - 1;
-			int end = mid;
-
-			for ( int j = 1; j < C ; ++j )
-			{
-				--start;
-				++end;
-			}
-
-			for ( int j = start; j <= end; ++j )
-				cout << " " << primes[j];
-		}
 		else
 		{
-			int mid = num_primes / 2;
-			int start = mid, end = mid;
+		    midIndex = num_primes / 2;
 
-			for ( int j = 1; j < C ; ++j )
-			{
-				--start;
-				++end;
-			}
-			for ( int j = start; j <= end; ++j )
+		    if ((num_primes % 2) == 0) {
+                startIndex = midIndex - C;
+                endIndex   = midIndex - 1 + C;
+		    }
+		    else {
+                startIndex = midIndex - C + 1;
+                endIndex   = midIndex + C - 1;
+		    }
+		    //cout << "Debug: " << "StartIndex= " << startIndex << " MidIndex= " << midIndex << " EndIndex= " << endIndex << endl;
+
+			for ( int j = startIndex; j <= endIndex; ++j )
 				cout << " " << primes[j];
 		}
-		cout << endl;
+
+		cout << endl << endl;
 	}
 	return 0;
 }
