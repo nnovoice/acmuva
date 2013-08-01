@@ -9,7 +9,7 @@ void makeEmpty(stack<int>& lifoStack, queue<int>& fifoQueue,
                priority_queue<int, vector<int>, std::less<int> >& priorityQueue)
 {
     while (lifoStack.empty() == false)
-            lifoStack.pop();
+        lifoStack.pop();
     while (fifoQueue.empty() == false)
         fifoQueue.pop();
     while (priorityQueue.empty() == false)
@@ -44,17 +44,19 @@ int main()
             cin >> op >> num;
             switch (op) {
                 case 1: {
-                    fifoQueue.push(num);
                     lifoStack.push(num);
+                    fifoQueue.push(num);
                     priorityQueue.push(num);
                 }
                     break;
                 case 2: {
-                    if (fifoQueue.empty() == false && isQueue)
-                        isQueue = (fifoQueue.front() == num) ? true : false;
-                    if (lifoStack.empty() == false && isStack)
+                    if ((lifoStack.empty() == false) && (isStack == true))
                         isStack = (lifoStack.top() == num) ? true : false;
-                    if (priorityQueue.empty() == false && isPriorityQueue)
+
+                    if ((fifoQueue.empty() == false) && (isQueue == true))
+                        isQueue = (fifoQueue.front() == num) ? true : false;
+
+                    if ((priorityQueue.empty() == false) && (isPriorityQueue == true))
                         isPriorityQueue = (priorityQueue.top() == num) ? true : false;
 
                     /*cout << "Debug: " << "Queue front= " << fifoQueue.front() << \
@@ -62,10 +64,18 @@ int main()
 
                     if (fifoQueue.empty() == false)
                         fifoQueue.pop();
+                    else
+                        isQueue = false;
+
                     if (lifoStack.empty() == false)
                         lifoStack.pop();
+                    else
+                        isStack = false;
+
                     if (priorityQueue.empty() == false)
                         priorityQueue.pop();
+                    else
+                        isPriorityQueue = false;
 
                 }
                     break;
@@ -75,12 +85,13 @@ int main()
         }
 
         //cout << "Debug: " << "isQueue= " << isQueue << " iStack= " << isStack << " is PQ= " << isPriorityQueue << endl;
-        isMultipleDataStructure = (isQueue & isStack) | (isQueue & isPriorityQueue) | (isStack & isPriorityQueue);
+        isMultipleDataStructure = (isQueue && isStack) || (isQueue && isPriorityQueue) || (isStack && isPriorityQueue);
+        //cout << "Debug: " << "(isQueue & isStack)" << (isQueue & isStack) << endl;
+        //cout << "Debug: " << "(isQueue & isPriorityQueue)" << (isQueue & isPriorityQueue) << endl;
+        //cout << "Debug: " << "(isStack & isPriorityQueue)" << (isStack & isPriorityQueue) << endl;
 
         if (isMultipleDataStructure)
             cout << "not sure";
-        else if (isQueue == false && isStack == false && isPriorityQueue == false)
-            cout << "impossible";
         else if (isQueue)
             cout << "queue";
         else if (isStack)
