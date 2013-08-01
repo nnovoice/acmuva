@@ -85,7 +85,7 @@ int main()
         }
 
         //cout << "Debug: " << "isQueue= " << isQueue << " iStack= " << isStack << " is PQ= " << isPriorityQueue << endl;
-        isMultipleDataStructure = (isQueue && isStack) || (isQueue && isPriorityQueue) || (isStack && isPriorityQueue);
+        isMultipleDataStructure = (isQueue & isStack) | (isQueue & isPriorityQueue) | (isStack & isPriorityQueue);
         //cout << "Debug: " << "(isQueue & isStack)" << (isQueue & isStack) << endl;
         //cout << "Debug: " << "(isQueue & isPriorityQueue)" << (isQueue & isPriorityQueue) << endl;
         //cout << "Debug: " << "(isStack & isPriorityQueue)" << (isStack & isPriorityQueue) << endl;
