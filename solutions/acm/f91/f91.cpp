@@ -1,3 +1,4 @@
+/* UVa 10696 - f91*/
 #include <iostream>
 using namespace std;
 
