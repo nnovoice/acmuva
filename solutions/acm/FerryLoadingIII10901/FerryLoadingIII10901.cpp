@@ -12,28 +12,28 @@ void StayOrMoveToOtherBank(bank& ferryBank, bank currentBank, bank otherBank,
 {
     if (currentBankCarsQueue.empty() == false) {
         if (otherBankCarsQueue.empty() == false) {
-            if (otherBankCarsQueue.front() < currentBankCarsQueue.front()) {
-                ferryBank = otherBank;
-                currentFerryTime += nFerryTravelTime;
-                if (currentFerryTime < otherBankCarsQueue.front())
-                    currentFerryTime = otherBankCarsQueue.front();
+            if (currentBankCarsQueue.front() < otherBankCarsQueue.front()) {
+                currentFerryTime = currentBankCarsQueue.front();
             }
             else {
-                ferryBank = currentBank;
-                currentFerryTime = currentBankCarsQueue.front();
+                ferryBank = otherBank;
+
+                // wait until the car arrives
+                currentFerryTime = otherBankCarsQueue.front();
+
+                // travel to pick it up
+                currentFerryTime += nFerryTravelTime;
             }
         }
         else {
-            ferryBank = currentBank;
             currentFerryTime = currentBankCarsQueue.front();
         }
     }
     else {
-        ferryBank = otherBank;
         if (otherBankCarsQueue.empty() == false) {
+            ferryBank = otherBank;
+            currentFerryTime = otherBankCarsQueue.front();
             currentFerryTime += nFerryTravelTime;
-            if (currentFerryTime < otherBankCarsQueue.front())
-                currentFerryTime = otherBankCarsQueue.front();
         }
     }
 
@@ -90,7 +90,7 @@ int main()
     int nRightCarsLoaded = 0;
 
     cin >> nCases;
-    for (int i = 0; i < nCases; ++ i) {
+    for (int i = 0; i < nCases; ++i) {
         cin >> nCars >> nFerryTravelTime >> nLines;
        // cout << "Debug: " << nCars << " " << nFerryTravelTime << " " << nLines << endl;
 
@@ -118,22 +118,24 @@ int main()
             if (leftBankCarsQueue.empty() && rightBankCarsQueue.empty())
                 break;
 
+            cout << "Debug: " << "current bank = " << ferryBank << " current ferry time= " << currentFerryTime << endl;
+
             nLeftCarsLoaded = 0;
             if (ferryBank == leftbank) {
                 nLeftCarsLoaded = LoadAndMoveCars(leftBankCarsQueue, carTimesMap,
                                                   currentFerryTime, nFerryTravelTime,
                                                   nCars);
                 cout << "Debug: " << "leftbank cars loaded= " << nLeftCarsLoaded << endl;
-            }
 
-            if (nLeftCarsLoaded != 0) {
-                ferryBank = rightbank;
-                //currentFerryTime += nFerryTravelTime;
-            }
-            else {
-                StayOrMoveToOtherBank(ferryBank, leftbank, rightbank,
+                if (nLeftCarsLoaded != 0) {
+                    ferryBank = rightbank;
+                    //currentFerryTime += nFerryTravelTime;
+                }
+                else {
+                    StayOrMoveToOtherBank(ferryBank, leftbank, rightbank,
                                       leftBankCarsQueue, rightBankCarsQueue,
                                       currentFerryTime, nFerryTravelTime);
+                }
             }
 
             nRightCarsLoaded = 0;
@@ -142,16 +144,16 @@ int main()
                                                    currentFerryTime, nFerryTravelTime,
                                                    nCars);
                 cout << "Debug: " << "rightbank cars loaded= " << nRightCarsLoaded << endl;
-            }
 
-            if (nRightCarsLoaded != 0) {
-                ferryBank = leftbank;
-                //currentFerryTime += nFerryTravelTime;
-            }
-            else {
-                StayOrMoveToOtherBank(ferryBank, rightbank, leftbank,
-                                      rightBankCarsQueue, leftBankCarsQueue,
-                                      currentFerryTime, nFerryTravelTime);
+                if (nRightCarsLoaded != 0) {
+                    ferryBank = leftbank;
+                    //currentFerryTime += nFerryTravelTime;
+                }
+                else {
+                    StayOrMoveToOtherBank(ferryBank, rightbank, leftbank,
+                                          rightBankCarsQueue, leftBankCarsQueue,
+                                          currentFerryTime, nFerryTravelTime);
+                }
             }
         }
 
