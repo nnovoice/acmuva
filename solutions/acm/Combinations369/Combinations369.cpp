@@ -1,10 +1,12 @@
 #include <iostream>
+#include <limits.h>
 
 using namespace std;
 
 int main()
 {
-    unsigned long long int pascalTriangle[103][103] = {};
+    //unsigned long long int pascalTriangle[103][103] = {};
+    long int pascalTriangle[103][103] = {};
     unsigned int N = 0;
     unsigned int K = 0;
 
@@ -30,6 +32,7 @@ int main()
 
         cout << N << " things taken " << K << " at a time is " << pascalTriangle[N + 1][K + 1] << " exactly." << endl;
     }
+    //cout << "Debug: " << "Max value of long int= " << LONG_MAX << endl;
 
 //    cout << "100 choose 6= " << pascalTriangle[101][7] << endl;
 //    cout << "20 choose 5= " << pascalTriangle[21][6] << endl;
