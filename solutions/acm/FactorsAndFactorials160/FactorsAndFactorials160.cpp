@@ -35,16 +35,20 @@ int main()
         factorialFactorsMap[i] = factorsMap;
     }
 
-    map<int, map<int, int> >::iterator endIter = factorialFactorsMap.end();
-    map<int, map<int, int> >::iterator iter = factorialFactorsMap.begin();
 
     map<int, int>::iterator endFactorIter;
     map<int, int>::iterator factorIter;
 
+
     int numFactorsPrinted = 0;
-    for (; iter != endIter; ++iter) {
-        factorsMap = (*iter).second;
-        cout << std::right << std::setw(3) << (*iter).first << "! =";
+        int num = 0;
+    while (cin >> num) {
+        if (num == 0)
+            break;
+
+        factorsMap = factorialFactorsMap[num];
+
+        cout << std::right << std::setw(3) << num << "! =";
         endFactorIter = factorsMap.end();
         factorIter = factorsMap.begin();
 
@@ -64,12 +68,5 @@ int main()
         }
         cout << endl;
     }
-
-//    int num = 0;
-//    while (cin >> num) {
-//        if (num == 0)
-//            break;
-//
-//    }
     return 0;
 }
