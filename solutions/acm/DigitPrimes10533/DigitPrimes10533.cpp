@@ -8,8 +8,7 @@ using namespace std;
 
 const int NUMMAX  = 1000000;
 bool isComposite[NUMMAX + 1];
-int primeIndexStore[NUMMAX + 1];
-map<int, int> digitSumMap;
+int digitSumStore[NUMMAX + 1];
 
 int GetDigitsSum (int num)
 {
@@ -34,15 +33,15 @@ void genPrimes()
 
     isComposite[0] = true;
     isComposite[1] = true;
-    int primeIndex = -1;
+    //int primeIndex = -1;
     for (int m = 2; m <= upperBoundSquareRoot; m++) {
         if (!isComposite[m]) {
-            digitSum = digitSumMap[m];
+            digitSum = digitSumStore[m];
             if (digitSum == 0) {
                 digitSum = GetDigitsSum(m);
-                digitSumMap[m] = digitSum;
+                digitSumStore[m] = digitSum;
             }
-            primeIndexStore[m] = ++primeIndex;
+            //primeIndexStore[m] = ++primeIndex;
             for (int k = m * m; k <= NUMMAX; k += m)
                 isComposite[k] = true;
         }
@@ -51,11 +50,11 @@ void genPrimes()
     for (int m = upperBoundSquareRoot; m <= NUMMAX; m++)
     {
         if (!isComposite[m]) {
-            primeIndexStore[m] = ++primeIndex;
-            digitSum = digitSumMap[m];
+            //primeIndexStore[m] = ++primeIndex;
+            digitSum = digitSumStore[m];
             if (digitSum == 0) {
                 digitSum = GetDigitsSum(m);
-                digitSumMap[m] = digitSum;
+                digitSumStore[m] = digitSum;
             }
         }
     }
@@ -87,11 +86,12 @@ int main()
         nDigitPrimes = 0;
         for (int j = rangeStart; j <= rangeEnd; ++j) {
             //printf("Debug: j= %d\n", j);
-            digitSum = digitSumMap[j];
-
-            if (isComposite[j] == false && isComposite[digitSum] == false) {
-                ++nDigitPrimes;
+            if (isComposite[j] == false) {
+                digitSum = digitSumStore[j];
+                if (isComposite[digitSum] == false) {
+                    ++nDigitPrimes;
                 //printf("Debug: num = %d nDigitPrimes= %d\n", j, nDigitPrimes);
+                }
             }
         }
         printf("%d\n", nDigitPrimes);
