@@ -1,14 +1,14 @@
 #include <iostream>
 #include <stdio.h>
-#include <map>
-#include <algorithm>
+//#include <map>
+//#include <algorithm>
 #include <cmath>
 
 using namespace std;
 
 const int NUMMAX  = 1000000;
 bool isComposite[NUMMAX + 1];
-int digitSumStore[NUMMAX + 1];
+int nPrimeDigitsStore[NUMMAX + 1];
 
 int GetDigitsSum (int num)
 {
@@ -26,6 +26,7 @@ int GetDigitsSum (int num)
 void genPrimes()
 {
     int upperBoundSquareRoot = (int)sqrt((double)NUMMAX);
+    int nDigitsPrime = 0;
     int digitSum = 0;
 
     //memset(isComposite, 0, sizeof(bool) * (NUMMAX));
@@ -36,26 +37,33 @@ void genPrimes()
     //int primeIndex = -1;
     for (int m = 2; m <= upperBoundSquareRoot; m++) {
         if (!isComposite[m]) {
-            digitSum = digitSumStore[m];
-            if (digitSum == 0) {
-                digitSum = GetDigitsSum(m);
-                digitSumStore[m] = digitSum;
-            }
-            //primeIndexStore[m] = ++primeIndex;
-            for (int k = m * m; k <= NUMMAX; k += m)
+            digitSum = GetDigitsSum(m);
+            if (!isComposite[digitSum])
+                nPrimeDigitsStore[m] = ++nDigitsPrime;
+            else
+                nPrimeDigitsStore[m] = nDigitsPrime;
+
+            for (int k = m * m; k <= NUMMAX; k += m) {
                 isComposite[k] = true;
+                //nPrimeDigitsStore[m] = nDigitsPrime;
+            }
+        }
+        else {
+            nPrimeDigitsStore[m] = nDigitsPrime;
         }
     }
 
     for (int m = upperBoundSquareRoot; m <= NUMMAX; m++)
     {
         if (!isComposite[m]) {
-            //primeIndexStore[m] = ++primeIndex;
-            digitSum = digitSumStore[m];
-            if (digitSum == 0) {
-                digitSum = GetDigitsSum(m);
-                digitSumStore[m] = digitSum;
-            }
+            digitSum = GetDigitsSum(m);
+            if (!isComposite[digitSum])
+                nPrimeDigitsStore[m] = ++nDigitsPrime;
+            else
+                nPrimeDigitsStore[m] = nDigitsPrime;
+        }
+        else {
+            nPrimeDigitsStore[m] = nDigitsPrime;
         }
     }
 }
@@ -66,12 +74,13 @@ int main()
     int rangeStart = 0;
     int rangeEnd = 0;
     int temp = 0;
-    map<int, int> digitPrimesMap;
-
     int nDigitPrimes = 0;
-    int digitSum = 0;
 
     genPrimes();
+
+//    for (int i = 1; i <= 999999; ++i) {
+//        printf("%d %d\n", i, nPrimeDigitsStore[i]);
+//    }
 
     scanf("%d", &nCases);
     for (int i = 0; i < nCases; ++i) {
@@ -83,17 +92,13 @@ int main()
             rangeEnd = temp;
         }
 
-        nDigitPrimes = 0;
-        for (int j = rangeStart; j <= rangeEnd; ++j) {
-            //printf("Debug: j= %d\n", j);
-            if (isComposite[j] == false) {
-                digitSum = digitSumStore[j];
-                if (isComposite[digitSum] == false) {
-                    ++nDigitPrimes;
-                //printf("Debug: num = %d nDigitPrimes= %d\n", j, nDigitPrimes);
-                }
-            }
+        nDigitPrimes = nPrimeDigitsStore[rangeEnd] - nPrimeDigitsStore[rangeStart];
+        // if rangeStart is a digit prime, add 1
+        if (!isComposite[rangeStart]) {
+            if ((nPrimeDigitsStore[rangeStart] - nPrimeDigitsStore[rangeStart - 1]) == 1)
+                ++nDigitPrimes;
         }
+
         printf("%d\n", nDigitPrimes);
     }
 
