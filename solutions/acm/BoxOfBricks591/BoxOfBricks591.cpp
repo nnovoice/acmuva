@@ -1,6 +1,4 @@
-#include <iostream>
-
-using namespace std;
+#include <stdio.h>
 
 int main()
 {
@@ -11,14 +9,14 @@ int main()
     int bricksToMove = 0;
     int caseNum = 0;
 
-    while (cin >> nStacks) {
+    while (scanf("%d", &nStacks) != EOF) {
         if (nStacks == 0) break;
 
         ++caseNum;
 
         totalBricks = 0;
         for (int i = 0; i < nStacks; ++i) {
-            cin >> stacks[i];
+            scanf("%d", &stacks[i]);
             totalBricks += stacks[i];
         }
 
@@ -30,8 +28,8 @@ int main()
                 bricksToMove += (commonWallHeight - stacks[i]);
             }
         }
-        cout << "Set #" << caseNum << endl;
-        cout << "The minimum number of moves is " << bricksToMove << "." << endl << endl;
+        printf("Set #%d\n", caseNum);
+        printf("The minimum number of moves is %d.\n\n", bricksToMove);
     }
 
     return 0;
