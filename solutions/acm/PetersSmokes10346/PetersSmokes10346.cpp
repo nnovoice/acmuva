@@ -7,19 +7,20 @@ int main()
     unsigned long long int n = 0;
     unsigned long long int k = 0;
     unsigned long long int numCigarettes = 0;
-    unsigned long long int remainder = 0;
+    unsigned long long int numNewCigarettes = 0;
+    unsigned long long int numButts = 0;
 
     while (cin >> n >> k) {
-        numCigarettes = 0;
-        remainder = 0;
+        numCigarettes = n;
+        numButts = numCigarettes;
 
-        while (n > 0) {
-            numCigarettes += n;
-            remainder += (n % k);
-            n /= k;
+        while (1) {
+            numNewCigarettes = (numButts / k);
+            numCigarettes += numNewCigarettes;
+            numButts = numNewCigarettes + (numButts % k);
+            if (numNewCigarettes == 0 && numButts < k)
+                break;
         }
-
-        numCigarettes += (remainder / k);
 
         cout << numCigarettes << endl;
     }
