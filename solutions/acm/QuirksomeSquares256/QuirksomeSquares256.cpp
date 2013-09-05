@@ -8,7 +8,39 @@ const unsigned int MAXNUMBERS = 100000000;
 const unsigned int MAXSQUARES = 19999;
 
 unsigned int squares[MAXSQUARES];
-unsigned int quirkNums[MAXSQUARES];
+
+void GetNumbers (unsigned int num, unsigned int& a, unsigned int& b, int digits)
+{
+    if (digits == 1) {
+        a = num % 10;
+        b = num / 10;
+    }
+    else if (digits == 2) {
+        a = num % 100;
+        b = num / 100;
+    }
+    else if (digits == 3) {
+        a = num % 1000;
+        b = num / 1000;
+    }
+    else if (digits == 4) {
+        a = num % 10000;
+        b = num / 10000;
+    }
+}
+
+void CheckAndAddQuirk(unsigned int num, unsigned int& a, unsigned int& b, vector<int>& quirkVector)
+{
+    if (squares[a] > num)
+        return;
+    if (squares[b] > num)
+        return;
+
+    unsigned int quirkSum = squares[a + b];
+    if (quirkSum == num) {
+        quirkVector.push_back(num);
+    }
+}
 
 int main()
 {
@@ -16,120 +48,41 @@ int main()
     unsigned int a = 0;
     unsigned int b = 0;
     unsigned int i = 0;
-    unsigned int quirkSum = 0;
-    int index = 0;
     int nQuirkDigits = 0;
 
     for (i = 0; i < MAXSQUARES; ++i) {
         squares[i] = i * i;
     }
 
-    quirkVectorArr[2].push_back(0);
-    quirkVectorArr[4].push_back(0);
-    quirkVectorArr[6].push_back(0);
-    quirkVectorArr[8].push_back(0);
-    quirkVectorArr[2].push_back(1);
-    quirkVectorArr[4].push_back(1);
-    quirkVectorArr[6].push_back(1);
-    quirkVectorArr[8].push_back(1);
+    for (i = 2; i <= 8; i += 2) {
+        quirkVectorArr[i].push_back(0);
+        quirkVectorArr[i].push_back(1);
+    }
 
     for (i = 2; i < MAXNUMBERS; ++i) {
         if (i < 100) {
-            a = i % 10;
-            b = i / 10;
-            if (squares[a] > i)
-                continue;
-            if (squares[b] > i)
-                continue;
-
-            quirkSum = squares[a + b];
-            if (quirkSum == i) {
-                //quirks[2] += 1;
-                quirkNums[++index] = i;
-                quirkVectorArr[2].push_back(i);
-            }
+            GetNumbers(i, a, b, 1);
+            CheckAndAddQuirk(i, a, b, quirkVectorArr[2]);
         }
         else if (i < 10000) {
-            a = i % 100;
-            b = i / 100;
-            if (squares[a] > i)
-                continue;
-            if (squares[b] > i)
-                continue;
-            quirkSum = squares[a + b];
-            if (quirkSum == i) {
-                //quirks[2] += 1;
-                quirkNums[++index] = i;
-                quirkVectorArr[4].push_back(i);
-            }
+            GetNumbers(i, a, b, 2);
+            CheckAndAddQuirk(i, a, b, quirkVectorArr[4]);
 
-            a = i % 1000;
-            b = i / 1000;
-            if (squares[a] > i)
-                continue;
-            if (squares[b] > i)
-                continue;
-            quirkSum = squares[a + b];
-            if (quirkSum == i) {
-                //quirks[4] += 1;
-                quirkNums[++index] = i;
-                quirkVectorArr[6].push_back(i);
-            }
+            GetNumbers(i, a, b, 3);
+            CheckAndAddQuirk(i, a, b, quirkVectorArr[6]);
         }
         else if (i < 1000000) {
-            a = i % 1000;
-            b = i / 1000;
-            if (squares[a] > i)
-                continue;
-            if (squares[b] > i)
-                continue;
-            quirkSum = squares[a + b];
-            if (quirkSum == i) {
-                //quirks[6] += 1;
-                quirkNums[++index] = i;
-                quirkVectorArr[6].push_back(i);
-            }
+            GetNumbers(i, a, b, 3);
+            CheckAndAddQuirk(i, a, b, quirkVectorArr[6]);
 
-            a = i % 10000;
-            b = i / 10000;
-            if (squares[a] > i)
-                continue;
-            if (squares[b] > i)
-                continue;
-            quirkSum = squares[a + b];
-            if (quirkSum == i) {
-                //quirks[8] += 1;
-                quirkNums[++index] = i;
-                quirkVectorArr[8].push_back(i);
-            }
+            GetNumbers(i, a, b, 4);
+            CheckAndAddQuirk(i, a, b, quirkVectorArr[8]);
         }
         else {
-            a = i % 10000;
-            b = i / 10000;
-            if (squares[a] > i)
-                continue;
-            if (squares[b] > i)
-                continue;
-            quirkSum = squares[a + b];
-            if (quirkSum == i) {
-                //quirks[8] += 1;
-                quirkNums[++index] = i;
-                quirkVectorArr[8].push_back(i);
-            }
+            GetNumbers(i, a, b, 4);
+            CheckAndAddQuirk(i, a, b, quirkVectorArr[8]);
         }
-        //cout << "Debug: " << "Num= " << i << " a = " << a << " b= " << b << endl;
     }
-
-//    quirks[4] += quirks[2];
-//    quirks[6] += quirks[4];
-//    quirks[8] += quirks[6];
-//    cout << "Debug: " << "quirks[2] = " << quirks[2] << endl;
-//    cout << "Debug: " << "quirks[4] = " << quirks[4] << endl;
-//    cout << "Debug: " << "quirks[6] = " << quirks[6] << endl;
-//    cout << "Debug: " << "quirks[8] = " << quirks[8] << endl;
-
-//    for (int j = 0; j <= index; ++j)
-//        cout << "Debug: " << "quirkNums[" << j << "]= " << quirkNums[j] << endl;
 
     while (cin >> nQuirkDigits) {
         for (unsigned int j = 0; j < quirkVectorArr[nQuirkDigits].size(); ++j){
