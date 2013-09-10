@@ -64,7 +64,7 @@ int main()
     maxCycleCount = 0;
     for (unsigned int i = m; i <= n; ++i) {
       if (maxCycleCount < cycles[i])
-	maxCycleCount = cycles[i];
+        maxCycleCount = cycles[i];
     }
 
     printf("%u %u %u\n", mOriginal, nOriginal, maxCycleCount);
