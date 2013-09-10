@@ -1,28 +1,49 @@
 #include <stdio.h>
 
 const unsigned int MAXNUMBERS = 1000000;
+const unsigned int MAXCACHENUMBERS = 300;
 unsigned int cycles[MAXNUMBERS];
+unsigned int numStack[MAXCACHENUMBERS];
+int index = 0;
 
-unsigned int GetCycleCount (unsigned int num)
+unsigned int GetCycleCount (unsigned int n)
 {
-  unsigned int cycleLen = 1;
-  while (num != 1) {
-    if ((num & 1) == 0)
-      num /= 2;
-    else {
-      num *= 3;
-      num += 1;
+    unsigned int num = n;
+    unsigned int cycleLen = 0;
+    unsigned int stackNum = 0;
+    while (1) {
+        if (num < MAXNUMBERS && cycles[num] != 0) {
+            cycleLen = cycles[num];
+            while (index > 0) {
+                stackNum = numStack[--index];
+                ++cycleLen;
+                if (stackNum < MAXNUMBERS) {
+                    cycles[stackNum] = cycleLen;
+                }
+            }
+            break; /// Gets us out of the loop
+        }
+        else {
+            numStack[index] = num;
+            ++index;
+        }
 
+        if ((num & 1) == 0)
+            num /= 2;
+        else { /// num = (3 * num) + 1
+          num *= 3;
+          num += 1;
+        }
     }
-    ++cycleLen;
-  }
-    return cycleLen;
+
+    return cycles[n];
 }
 
 int main()
 {
   unsigned int maxCycleCount = 0;
   cycles[1] = 1;
+  cycles[2] = 2;
   for (unsigned int i = 2; i <= MAXNUMBERS; ++i) {
     cycles[i] = GetCycleCount(i);
     //printf("%u,%u\n", i, cycles[i]);
