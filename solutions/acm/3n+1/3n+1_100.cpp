@@ -29,7 +29,7 @@ unsigned int GetCycleCount (unsigned int n)
         }
 
         if ((num & 1) == 0)
-            num /= 2;
+            num >>= 1;
         else { /// num = (3 * num) + 1
           num *= 3;
           num += 1;
