@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 const unsigned int MAXNUMBERS = 1000000;
-const unsigned int MAXCACHENUMBERS = 300;
+const unsigned int MAXSTACKNUMBERS = 300;
 unsigned int cycles[MAXNUMBERS];
-unsigned int numStack[MAXCACHENUMBERS];
+unsigned int numStack[MAXSTACKNUMBERS];
 int index = 0;
 
 unsigned int GetCycleCount (unsigned int n)
