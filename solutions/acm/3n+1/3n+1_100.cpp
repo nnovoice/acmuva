@@ -43,7 +43,6 @@ int main()
 {
   unsigned int maxCycleCount = 0;
   cycles[1] = 1;
-  cycles[2] = 2;
   for (unsigned int i = 2; i <= MAXNUMBERS; ++i) {
     cycles[i] = GetCycleCount(i);
     //printf("%u,%u\n", i, cycles[i]);
