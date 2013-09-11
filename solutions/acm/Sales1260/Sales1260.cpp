@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdio.h>
 
 using namespace std;
 
@@ -10,11 +10,11 @@ int main()
     int nSalesNumbers = 0;
     int totalDaysOfBadSales = 0;
     int nCases = 0;
-    cin >> nCases;
+    scanf("%d", &nCases);
     for (int i = 0; i < nCases; ++i) {
-        cin >> nSalesNumbers;
+        scanf("%d", &nSalesNumbers);
         for (int j = 0; j < nSalesNumbers; ++j)
-            cin >> dailySalesNumbers[j];
+            scanf("%d", &dailySalesNumbers[j]);
 
         totalDaysOfBadSales = 0;
         for (int k = 1; k < nSalesNumbers; ++k) {
@@ -23,7 +23,7 @@ int main()
                     ++totalDaysOfBadSales;
             }
         }
-        cout << totalDaysOfBadSales << endl;
+        printf("%d\n", totalDaysOfBadSales);
 
     }
     return 0;
