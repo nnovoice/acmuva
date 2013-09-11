@@ -1,0 +1,30 @@
+Case 1:
+Closest sum to 10 is 3.
+Case 2:
+Closest sum to 1 is 5.
+Case 3:
+Closest sum to 1 is -1.
+Closest sum to 100 is 101.
+Closest sum to 101 is 101.
+Closest sum to 1000 is 101.
+Closest sum to 10000 is 101.
+Case 4:
+Closest sum to 1000 is 181.
+Closest sum to 10 is 10.
+Closest sum to 1 is 5.
+Closest sum to 12 is 13.
+Closest sum to 15 is 13.
+Closest sum to 76 is 74.
+Closest sum to 56 is 58.
+Closest sum to 44 is 45.
+Closest sum to 31 is 29.
+Closest sum to 25 is 26.
+Closest sum to 90 is 90.
+Closest sum to 3 is 5.
+Closest sum to 65 is 65.
+Closest sum to 85 is 85.
+Closest sum to 181 is 181.
+Closest sum to 5 is 5.
+Closest sum to 5 is 5.
+Closest sum to 181 is 181.
+Closest sum to 0 is 5.
