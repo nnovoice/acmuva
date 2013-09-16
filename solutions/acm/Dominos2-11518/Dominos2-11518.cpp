@@ -8,7 +8,7 @@ using namespace std;
 const int MAXNUMBER = 10001;
 bool visited[MAXNUMBER];
 int dominosStack[MAXNUMBER];
-int index;
+int idx;
 
 void PrintMap(map<int, vector<int>* >& dominoesConfigurationMap)
 {
@@ -42,7 +42,7 @@ int main()
     while (nCases--) {
         memset (visited, false, sizeof(visited));
         memset (dominosStack, 0, sizeof(dominosStack));
-        index = 0;
+        idx = 0;
         dominoesConfigurationMap = map<int, vector<int>* >();
         nDominoesThatFell = 0;
 
@@ -56,27 +56,27 @@ int main()
             }
             dominoesConfigurationMap[d1]->push_back(d2);
         }
-        cout << "Debug: " << "Printing map" << endl;
-        PrintMap(dominoesConfigurationMap);
-        cout << "Debug: " << "End of Printing map" << endl;
+        //cout << "Debug: " << "Printing map" << endl;
+        //PrintMap(dominoesConfigurationMap);
+        //cout << "Debug: " << "End of Printing map" << endl;
 
         for (int j = 0; j < l; ++j) {
             cin >> manualDomino;
-            cout << "Debug: " << "manual domino= " << manualDomino << endl;
-            dominosStack[index++] = manualDomino;
-            cout << "Debug: " << "index after inserting domino into stack= " << index << endl;
-            while (index != 0) {
-                currentDomino = dominosStack[--index];
-                cout << "Debug: " << "current domino= " << currentDomino << endl;
+            //cout << "Debug: " << "manual domino= " << manualDomino << endl;
+            dominosStack[idx++] = manualDomino;
+            //cout << "Debug: " << "idx after inserting domino into stack= " << idx << endl;
+            while (idx != 0) {
+                currentDomino = dominosStack[--idx];
+                //cout << "Debug: " << "current domino= " << currentDomino << endl;
                 if (visited[currentDomino] == false) {
-                        cout << "Debug: " << "Visited current domino= " << visited[currentDomino] << endl;
+                        //cout << "Debug: " << "Visited current domino= " << visited[currentDomino] << endl;
                     visited[currentDomino] = true;
                     ++nDominoesThatFell;
                     pFallingDominos = dominoesConfigurationMap[currentDomino];
                     if (pFallingDominos != 0) {
                         for (unsigned int k = 0; k < pFallingDominos->size(); ++k) {
-                            dominosStack[index++] = (*pFallingDominos)[k];
-                            cout << "Debug: " << "Inserting domino into stack= " << dominosStack[index - 1] << endl;
+                            dominosStack[idx++] = (*pFallingDominos)[k];
+                            //cout << "Debug: " << "Inserting domino into stack= " << dominosStack[idx - 1] << endl;
                         }
                     }
                 }
