@@ -4,6 +4,9 @@
 const int BOARDSIZE = 8;
 int board[BOARDSIZE][BOARDSIZE];
 int nQueensPlaced = 0;
+int queensXStack[BOARDSIZE];
+int queensYStack[BOARDSIZE];
+int idx;
 
 void PrintBoard(int board[BOARDSIZE][BOARDSIZE])
 {
@@ -81,12 +84,47 @@ bool CanPlaceQueen(int board[BOARDSIZE][BOARDSIZE], int row, int col)
 
 void PlaceQueens(int board[BOARDSIZE][BOARDSIZE], int x, int y)
 {
-    for (int i = 0; i < BOARDSIZE; ++i) {
-        for (int j = 0; j < BOARDSIZE; ++j) {
-            if (CanPlaceQueen(board, i, j) == true) {
-                board[i][j] = 1;
-                //PlaceQueens(board, i + 1, j + 1);
+    idx = 0;
+    bool queenPlaced = false;
+    int i = 0;
+    int j = 0;
+    int lastI = 0;
+    int lastJ = 0;
+    for (i = 0; i < BOARDSIZE; ++i) {
+        queenPlaced = false;
+        for (j = 0; j < BOARDSIZE; ++j) {
+            if (i == 0 && j == 0 && idx == 0) {
+                if (CanPlaceQueen(board, i, j) == true) {
+                    board[i][j] = 1;
+                    queensXStack[idx] = i;
+                    queensYStack[idx] = j;
+                    ++idx;
+                    queenPlaced = true;
+                    //break; // move to the next row
+                    //PlaceQueens(board, i + 1, j + 1);
+                }
             }
+            if (idx > 0 && queenPlaced == false) {
+                //&& i == lastI && j != lastJ
+                i = lastI;
+                j = lastJ + 1;
+                if (CanPlaceQueen(board, i, j) == true) {
+                    board[i][j] = 1;
+                    queensXStack[idx] = i;
+                    queensYStack[idx] = j;
+                    ++idx;
+                    queenPlaced = true;
+                    //break; // move to the next row
+                    //PlaceQueens(board, i + 1, j + 1);
+                }
+            }
+        }
+        // were we able to place a queen? if not, backtrack
+        if (queenPlaced == false) {
+            --idx;
+            board[queensXStack[idx]][queensYStack[idx]] = 0;
+            lastI = queensXStack[idx];
+            lastJ = queensYStack[idx];
         }
     }
 }
