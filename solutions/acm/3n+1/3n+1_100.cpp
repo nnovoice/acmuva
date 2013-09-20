@@ -39,12 +39,21 @@ unsigned int GetCycleCount (unsigned int n)
     return cycles[n];
 }
 
+unsigned collatz_aux(unsigned n, unsigned count)
+{
+      if (n == 1)
+           return count;
+      else if (n % 2 == 0)
+           return collatz_aux(n / 2, count + 1);
+      else
+           return collatz_aux(3 * n + 1, count + 1);
+}
 int main()
 {
   unsigned int maxCycleCount = 0;
   cycles[1] = 1;
   for (unsigned int i = 2; i <= MAXNUMBERS; ++i) {
-    cycles[i] = GetCycleCount(i);
+    cycles[i] = collatz_aux(i, 0) + 1;
     //printf("%u,%u\n", i, cycles[i]);
   }
 
