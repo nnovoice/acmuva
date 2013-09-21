@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-const int MAXLEN = 101;
+const int MAXLEN = 1025;
 int main()
 {
     char input[MAXLEN] = {'\0'};
@@ -20,6 +20,17 @@ int main()
         for (i = 0; i < numGroups; ++i) {
             j = i * groupLen;
             k = j + (groupLen - 1);
+            //printf("Debug: j= %d, k= %d\n", j, k);
+            for (; j < k; ++j, --k) {
+                temp = input[j];
+                input[j] = input[k];
+                input[k] = temp;
+            }
+        }
+
+        if ((inputLen % groupLen) != 0) {
+            j = numGroups * groupLen;
+            k = inputLen - 1;
             //printf("Debug: j= %d, k= %d\n", j, k);
             for (; j < k; ++j, --k) {
                 temp = input[j];
