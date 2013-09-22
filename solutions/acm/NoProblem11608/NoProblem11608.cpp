@@ -31,8 +31,8 @@ int main()
             else {
                 cout << "No problem! :D" << endl;
                 currentlyAvailableProblems -= required[i];
-                currentlyAvailableProblems += available[i];
             }
+            currentlyAvailableProblems += available[i];
         }
     }
     return 0;
