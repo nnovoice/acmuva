@@ -2,7 +2,7 @@
 
 using namespace std;
 
-unsigned int gcd (unsigned int a, unsigned int b)
+unsigned long long gcd (unsigned long long a, unsigned long long b)
 {
     if (a == 1)
         return 1;
@@ -24,18 +24,21 @@ unsigned int gcd (unsigned int a, unsigned int b)
 
 int main()
 {
-    unsigned int a = 0;
-    unsigned int b = 0;
-    unsigned int gcdOfNums = 0;
+    unsigned long long a = 0;
+    unsigned long long b = 0;
+    unsigned long long gcdOfNums = 0;
+    unsigned long long lcmOfNums = 0;
     int nCases = 0;
     cin >> nCases;
     for (int i = 0; i < nCases; ++i) {
         cin >> a >> b;
         gcdOfNums = gcd (a, b);
+
         if (gcdOfNums == 1) {
             if (a == 1 || b == 1) {
                 cout << gcdOfNums << " ";
-                cout << ((a > b) ? a : b);
+                lcmOfNums = (a * b)/gcdOfNums;
+                cout << lcmOfNums;
             }
             else {
                 cout << -1;
@@ -47,7 +50,8 @@ int main()
                 cout << 0;
             }
             else {
-                cout << ((a > b) ? a : b);
+                lcmOfNums = (a * b)/gcdOfNums;
+                cout << lcmOfNums;
             }
         }
         cout << endl;
