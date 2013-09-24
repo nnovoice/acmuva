@@ -1,61 +1,134 @@
 #include <iostream>
-
+#include <map>
+#include <cmath>
 using namespace std;
 
-unsigned long long gcd (unsigned long long a, unsigned long long b)
+//const unsigned int MAXNUM = 2147483648; // 2^31
+const int NUMPOSSIBLEPRIMEDIVISORS  = 46340; // close to sqrt of MAXNUM
+bool isComposite[NUMPOSSIBLEPRIMEDIVISORS + 1];
+int primes[NUMPOSSIBLEPRIMEDIVISORS + 1];
+int numPrimes;
+int divisorsOfA[NUMPOSSIBLEPRIMEDIVISORS + 1];
+int divisorsOfB[NUMPOSSIBLEPRIMEDIVISORS + 1];
+
+void genPrimes()
 {
-    if (a == 1)
-        return 1;
-    if (b == 1)
-        return 1;
-    if (a == 0 && b == 0)
-        return 0;
-    if (a == 0 && b != 0)
+    int upperBoundSquareRoot = NUMPOSSIBLEPRIMEDIVISORS;
+
+    isComposite[0] = true;
+    isComposite[1] = true;
+    int primeIndex = -1;
+    for (int m = 2; m <= upperBoundSquareRoot; ++m) {
+        if (!isComposite[m]) {
+            primes[++primeIndex] = m;
+            ////cout << "Debug: "  << primes[primeIndex - 1] << endl;
+            for (int k = m * m; k <= NUMPOSSIBLEPRIMEDIVISORS; k += m)
+                isComposite[k] = true;
+        }
+    }
+
+    numPrimes = primeIndex + 1;
+    ////cout << "Debug: "  << "done with primes." << endl;
+}
+
+map<int, int> GetDivisors(int a)
+{
+    map<int, int> divisors;
+    divisors[1] = 1; // 1 is always a divisor
+    int divisorMultiple = 0;
+    int squareRootA = (int)sqrt((double)a);
+    //cout << "Debug: " << "sqrt of " << a << " = " << squareRootA << endl;
+    for (int i = 0; ((primes[i] <= squareRootA) && (i < numPrimes)); ++i) {
+        ////cout << "Debug: " << "primes[" << i << "]= " << primes[i] << endl;
+        ////cout << "Debug: " << a << "% " << primes[i] << " = " << (a % primes[i]) << endl;
+        if ((a % primes[i]) == 0) {
+            if (divisors[primes[i]] == 0)
+                divisors[primes[i]] = 1;
+
+            divisorMultiple = primes[i];
+            for (int j = 2; divisorMultiple <= a; ++j) {
+                divisorMultiple = primes[i] * j;
+                if ((a % divisorMultiple) == 0) {
+                    if (divisors[divisorMultiple] == 0) {
+                        divisors[divisorMultiple] = 1;
+                    }
+                }
+            }
+        }
+    }
+    return divisors;
+}
+
+int gcd (int a, int b)
+{
+    if (a == 0)
         return b;
-    if (b == 0 && a != 0)
+    if (b == 0)
         return a;
-    if (a > b) {
-        return gcd (a - b, b);
+
+    int gcdOfNums = 0;
+    int aMultiple = 0;
+    int bMultiple = 0;
+
+    map<int, int> divisorsOfA = GetDivisors(a);
+    //cout << "Debug: " << "got divisors of " << a << endl;
+    map<int, int> divisorsOfB = GetDivisors(b);
+    //cout << "Debug: " << "got divisors of " << b << endl;
+
+    map<int, int>::iterator iterA = divisorsOfA.begin();
+    map<int, int>::iterator iterAEnd = divisorsOfA.end();
+    map<int, int>::iterator iterB = divisorsOfB.begin();
+    map<int, int>::iterator iterBEnd = divisorsOfB.end();
+
+    for (; iterA != iterAEnd && iterB != iterBEnd; ++iterA, ++iterB) {
+        aMultiple = (*iterA).second;
+        bMultiple = (*iterB).second;
+        if (divisorsOfB[aMultiple] != 0 && gcdOfNums < aMultiple)
+            gcdOfNums = aMultiple;
+        if (divisorsOfA[bMultiple] != 0 && gcdOfNums < bMultiple)
+            gcdOfNums = bMultiple;
     }
-    else {
-        return gcd (a, b - a);
-    }
+
+    return gcdOfNums;
 }
 
 int main()
 {
-    unsigned long long a = 0;
-    unsigned long long b = 0;
-    unsigned long long gcdOfNums = 0;
-    unsigned long long lcmOfNums = 0;
+    int a = 0;
+    int b = 0;
+    int gcdOfNums = 0;
+    long long int lcmOfNums = 0;
     int nCases = 0;
+
+    genPrimes();
+
     cin >> nCases;
     for (int i = 0; i < nCases; ++i) {
         cin >> a >> b;
         gcdOfNums = gcd (a, b);
-
-        if (gcdOfNums == 1) {
-            if (a == 1 || b == 1) {
-                cout << gcdOfNums << " ";
-                lcmOfNums = (a * b)/gcdOfNums;
-                cout << lcmOfNums;
-            }
-            else {
-                cout << -1;
-            }
+        if (gcdOfNums == 0) {
+            cout << 0 << " " << 0;
         }
         else {
-            cout << gcdOfNums << " ";
-            if (a == 0 || b == 0) {
-                cout << 0;
+            if (gcdOfNums == 1) {
+                if (a == 1 || b == 1) {
+                    cout << gcdOfNums << " ";
+                    lcmOfNums = (a * b)/gcdOfNums;
+                    cout << lcmOfNums;
+                }
+                else {
+                    cout << -1;
+                }
             }
             else {
-                lcmOfNums = (a * b)/gcdOfNums;
+                cout << gcdOfNums << " ";
+                lcmOfNums = ((long long)a * (long long)b)/(long long)gcdOfNums;
                 cout << lcmOfNums;
             }
         }
+
         cout << endl;
-        ///cout << "Debug: " << "GCD= " << gcdOfNums << endl;
+        /////cout << "Debug: " << "GCD= " << gcdOfNums << endl;
     }
 
     return 0;
