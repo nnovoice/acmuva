@@ -1,12 +1,12 @@
 /* UVa 12356 - ArmyBuddies*/
 #define MAXSOLDIERS 100001
 #include <iostream>
-#include <bitset>
+#include <string.h>
 using namespace std;
 
 int main()
 {
-	bitset <MAXSOLDIERS> soldiers;
+	bool soldiers[MAXSOLDIERS] = {false};
 	int nSoldiers = 0;
 	int nLossReports = 0;
 	int leftSoldier = 0;
@@ -16,31 +16,38 @@ int main()
 		if (nSoldiers == 0 && nLossReports == 0) 
 			break;
 
-		soldiers.set();
-		soldiers.flip(0);
-		soldiers.flip(nSoldiers + 1);
+		memset (soldiers, true, sizeof(bool) * (nSoldiers + 1));
+		soldiers[0] = false;
+		soldiers[nSoldiers + 1] = false;
 
 		for (int i = 0; i < nLossReports; ++i) {
+			/*cout << "Debug: ";
+			for (int k = 1; k <= nSoldiers; ++k) {
+				cout << soldiers[k] << " ";
+			}
+			cout << endl;*/
 			cin >> leftSoldier >> rightSoldier;
+			//cout << "Debug: " << leftSoldier << " " << rightSoldier << endl;
 
 			// mark the losses in range [left, right]
 			for (int j = leftSoldier; j <= rightSoldier; ++j)
-				soldiers.flip(j);
+				soldiers[j] = false;
 
 			int leftBuddy = leftSoldier - 1;
 			for (; leftBuddy > 0; --leftBuddy)
-				if (soldiers.test(leftBuddy) == true)
+				if (soldiers[leftBuddy] == true)
 					break;
-			
-			(leftBuddy > 0) ? (cout << leftBuddy) : (cout << '*');
+			//cout << "Debug: " << "Left buddy = " << leftBuddy << endl;
+			(soldiers[leftBuddy] == true) ? (cout << leftBuddy) : (cout << '*');
 			cout << ' ';
 
 			int rightBuddy = rightSoldier + 1;
 			for (; rightBuddy <= nSoldiers; ++rightBuddy)
-				if (soldiers.test(rightBuddy) == true)
+				if (soldiers[rightBuddy] == true)
 					break;
+			//cout << "Debug: " << "Right buddy = " << rightBuddy << endl;
 
-			(soldiers.test(rightBuddy) == true) ? (cout << rightBuddy) : (cout << '*');
+			(soldiers[rightBuddy] == true) ? (cout << rightBuddy) : (cout << '*');
 			cout << endl;
 		}
 		cout << '-' << endl;
