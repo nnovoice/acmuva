@@ -1,24 +1,30 @@
 /* UVa 12356 - ArmyBuddies*/
 #define MAXSOLDIERS 100001
-#include <iostream>
+#include <stdio.h>
 #include <string.h>
 using namespace std;
 
 int main()
 {
-	bool soldiers[MAXSOLDIERS] = {false};
+	int leftSoldiers[MAXSOLDIERS] = {0};
+	int rightSoldiers[MAXSOLDIERS] = {0};
 	int nSoldiers = 0;
 	int nLossReports = 0;
 	int leftSoldier = 0;
 	int rightSoldier = 0;
 
-	while (cin >> nSoldiers >> nLossReports) {
-		if (nSoldiers == 0 && nLossReports == 0) 
+	while (scanf("%d %d", &nSoldiers, &nLossReports) != EOF) {
+		if (nSoldiers == 0 && nLossReports == 0)
 			break;
 
-		memset (soldiers, true, sizeof(bool) * (nSoldiers + 1));
-		soldiers[0] = false;
-		soldiers[nSoldiers + 1] = false;
+		memset (leftSoldiers, 0, sizeof(int) * (nSoldiers + 1));
+		memset (rightSoldiers, 0, sizeof(int) * (nSoldiers + 1));
+
+		leftSoldiers[0] = -1;
+		leftSoldiers[nSoldiers + 1] = nSoldiers;
+
+		rightSoldiers[0] = 1;
+		rightSoldiers[nSoldiers + 1] = -1;
 
 		for (int i = 0; i < nLossReports; ++i) {
 			/*cout << "Debug: ";
@@ -26,31 +32,39 @@ int main()
 				cout << soldiers[k] << " ";
 			}
 			cout << endl;*/
-			cin >> leftSoldier >> rightSoldier;
+			//cin >> leftSoldier >> rightSoldier;
+			scanf("%d %d", &leftSoldier, &rightSoldier);
 			//cout << "Debug: " << leftSoldier << " " << rightSoldier << endl;
+			//printf("left soldier= %d right Soldiers= %d\n", leftSoldier, rightSoldier);
 
 			// mark the losses in range [left, right]
-			for (int j = leftSoldier; j <= rightSoldier; ++j)
-				soldiers[j] = false;
+			int j = leftSoldier;
+			int k = rightSoldier;
+			for (; j <= rightSoldier && k >= leftSoldier; ++j, --k) {
+				//leftSoldiers[j] = leftSoldiers[j - 1];
+				leftSoldiers[j] = (leftSoldiers[j - 1] == 0) ? (j - 1) : leftSoldiers[j - 1];
+				//printf("leftSoldiers[%d]=%d\n", j, leftSoldiers[j]);
+				//cout << "Debug: " << leftSoldier << " " << rightSoldier << endl;
+				//rightSoldiers[k] = rightSoldiers[k + 1];
+				rightSoldiers[k] = (rightSoldiers[k + 1] == 0) ? (k + 1) : rightSoldiers[k + 1];
+				//printf("rightSoldiers[%d]=%d\n", k, rightSoldiers[k]);
+			}
 
 			int leftBuddy = leftSoldier - 1;
-			for (; leftBuddy > 0; --leftBuddy)
-				if (soldiers[leftBuddy] == true)
-					break;
+			while (leftSoldiers[leftBuddy] != -1 && leftSoldiers[leftBuddy] != 0)
+				leftBuddy = leftSoldiers[leftBuddy];
+
 			//cout << "Debug: " << "Left buddy = " << leftBuddy << endl;
-			(soldiers[leftBuddy] == true) ? (cout << leftBuddy) : (cout << '*');
-			cout << ' ';
+			(leftSoldiers[leftBuddy] == 0) ? (printf("%d ", leftBuddy)) : (printf("* "));
 
 			int rightBuddy = rightSoldier + 1;
-			for (; rightBuddy <= nSoldiers; ++rightBuddy)
-				if (soldiers[rightBuddy] == true)
-					break;
+			while (rightSoldiers[rightBuddy] != -1 && rightSoldiers[rightBuddy] != 0)
+				rightBuddy = rightSoldiers[rightBuddy];
 			//cout << "Debug: " << "Right buddy = " << rightBuddy << endl;
 
-			(soldiers[rightBuddy] == true) ? (cout << rightBuddy) : (cout << '*');
-			cout << endl;
+			(rightSoldiers[rightBuddy] == 0) ? (printf("%d\n", rightBuddy)) : (printf("*\n"));
 		}
-		cout << '-' << endl;
+		printf("-\n");
 	}
 	return 0;
 }
