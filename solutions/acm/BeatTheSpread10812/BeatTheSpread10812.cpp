@@ -12,6 +12,7 @@ int main()
     ULI scoreB = 0;
     ULI scoresTotal = 0;
     ULI scoresDiff = 0;
+    ULI totalOfTotalAndDiff = 0;
     scanf("%d", &nCases);
     for (int i = 0; i < nCases; ++i)
     {
@@ -21,16 +22,17 @@ int main()
         // 2x = scoresTotal + scoresDiff
         // x = (scoresTotal + scoresDiff) / 2
         // y = scoresTotal - x
-        if (scoresTotal <= scoresDiff) {
+        if (scoresTotal < scoresDiff) {
             printf("impossible\n");
         }
         else {
-            scoreA = (scoresTotal + scoresDiff) / 2;
-            scoreB = scoresTotal - scoreA;
-            if (((scoreA + scoreB) != scoresTotal) && ((scoreA - scoreB) != scoresDiff)) {
+            totalOfTotalAndDiff = scoresTotal + scoresDiff;
+            if ((totalOfTotalAndDiff % 2) != 0) {
                 printf("impossible\n");
             }
             else {
+                scoreA = totalOfTotalAndDiff / 2;
+                scoreB = scoresTotal - scoreA;
                 printf("%lu %lu\n", scoreA, scoreB);
             }
         }
