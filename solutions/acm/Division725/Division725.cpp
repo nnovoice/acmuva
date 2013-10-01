@@ -45,9 +45,14 @@ int main()
     int i = 0;
     int nSolutions = 0;
     bool uniqueDigits = false;
+    int nCases = 0;
     while (scanf("%d", &n) != EOF) {
         if (n == 0) break;
 
+        ++nCases;
+        if (nCases > 1) {
+            printf("\n\n");
+        }
         nSolutions = 0;
         for (i = 12345; i < 98765; ++i) {
             if ((i % n) == 0) {
@@ -55,14 +60,16 @@ int main()
                 if (uniqueDigits) {
                     //printf ("a=%d b=%05d\n", i, (i/n));
                     ++nSolutions;
-                    printf ("%d / %05d = %d\n", i, (i/n), n);
+                    if (nSolutions > 1)
+                        printf("\n");
+                    printf ("%d / %05d = %d", i, (i/n), n);
                 }
             }
         }
         if (nSolutions == 0) {
-            printf("There are no solutions for %d.\n", n);
+            printf("There are no solutions for %d.", n);
         }
-        printf("\n");
+
     }
     return 0;
 }
