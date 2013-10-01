@@ -55,10 +55,7 @@ int main()
             if ((i % n) == 0) {
                 uniqueDigits = AreDigitsUnique(i, (i/n));
                 if (uniqueDigits) {
-                    //printf ("a=%d b=%05d\n", i, (i/n));
                     ++nSolutions;
-//                    if (nSolutions > 1)
-//                        printf("\n");
                     printf ("%d / %05d = %d\n", i, (i/n), n);
                 }
             }
