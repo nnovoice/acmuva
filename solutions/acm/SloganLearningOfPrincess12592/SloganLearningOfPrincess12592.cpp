@@ -13,7 +13,7 @@ int main()
     int nFirstLineOfSlogans = 0;
 
     cin >> nSlogans;
-    cin.getline(sloganFirstLine, MAXSLOGANLENGTH);
+    cin.getline(sloganFirstLine, MAXSLOGANLENGTH); /// eat the empty line
     for (int i = 0; i < nSlogans; ++i) {
         cin.getline(sloganFirstLine, MAXSLOGANLENGTH);
         cin.getline(sloganSecondLine, MAXSLOGANLENGTH);
@@ -21,8 +21,8 @@ int main()
     }
 
     cin >> nFirstLineOfSlogans;
-    cin.getline(sloganFirstLine, MAXSLOGANLENGTH);
-    for (int i = 0; i < nSlogans; ++i) {
+    cin.getline(sloganFirstLine, MAXSLOGANLENGTH); /// eat the empty line
+    for (int i = 0; i < nFirstLineOfSlogans; ++i) {
         cin.getline(sloganFirstLine, MAXSLOGANLENGTH);
         //cout << "Debug: " << sloganFirstLine << endl;
         cout << slogans[sloganFirstLine] << endl;
