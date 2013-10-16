@@ -6,6 +6,30 @@ const int MAXCHARS = 1025;
 
 using namespace std;
 
+void ResetVars(char charArr[MAXCHARS], int& charIndex, bool& continueWord)
+{
+    charIndex = -1;
+    memset (charArr, '\0', sizeof(char) * MAXCHARS);
+    continueWord = false;
+}
+
+void PushWord(char charArr[MAXCHARS], int charIndex, set<string>& words)
+{
+    if (charIndex != -1) {
+        // If '-' occurs without a suffix (for instance hello-), remove all such '-' chars
+        while (charArr[charIndex] == '-') {
+            --charIndex;
+        }
+        charArr[charIndex + 1] = '\0';
+
+        int charArrLen = strlen (charArr);
+        if (charArrLen > 0) {
+            //cout << "Debug: " << "char index= " << charIndex << " str= " << charArr << endl;
+            words.insert(charArr);
+        }
+    }
+}
+
 bool IsLetter(char c)
 {
     if (c >= 'A' && c <= 'Z') {
@@ -27,24 +51,15 @@ int main()
     char prevChar = ' ';
     char input[MAXCHARS] = {' '};
     char charArr[MAXCHARS] = {' '};
-    int charArrLen = 0;
     int charIndex = -1;
     bool continueWord = false;
 
     //while (cin.getline(input, MAXCHARS)) {
     while (cin >> input) {
-
         int len = strlen(input);
-        //cout << "Debug: " << "input= " << input << " len= " << len << endl;
-
         if (len == 0) continue;
 
-        if (continueWord == true) {
-            continueWord = false;
-        }
-        else {
-            charIndex = -1;
-        }
+        continueWord = false;
 
         for (int i = 0; i < len; ++i) {
             c = input[i];
@@ -60,58 +75,29 @@ int main()
                     if (IsLetter(prevChar) == true) {
                         charArr[++charIndex] = c;
                     }
-                    else {
-                        continueWord = false;
-                    }
                 }
                 else {
                     continueWord = true;
                 }
             }
             else { // LEARNING: a word is a set of consecutive alphabets. If we get anything else, the word ends
-                if (charIndex != -1) {
-                    // If '-' occurs without a suffix (for instance hello-), remove all such '-' chars
-                    while (charArr[charIndex] == '-') {
-                        --charIndex;
-                    }
-                    charArr[charIndex + 1] = '\0';
+                PushWord (charArr, charIndex, words);
 
-                    charArrLen = strlen (charArr);
-                    if (charArrLen > 0) {
-                        //cout << "Debug: " << "char index= " << charIndex << " str= " << charArr << endl;
-                        words.insert(charArr);
-                    }
-                }
-
-                charIndex = -1;
-                memset (charArr, '\0', sizeof(char) * MAXCHARS);
-                continueWord = false;
+                ResetVars(charArr, charIndex, continueWord);
             }
         }
 
         // LEARNING: if we get a set of chars which are non-alphabets, don't add without this check
+        // Push word id required here because if we get "hell:oo", we will have to consider hello and oo
+        // as 2 separate words
         if (charIndex != -1 && continueWord == false) {
-            words.insert(charArr);
-        }
-
-        if (continueWord == false) {
-
-            charArrLen = strlen (charArr);
-            if (charArrLen > 0) {
-                //cout << "Debug: " << "char index= " << charIndex << " str= " << charArr << endl;
-                words.insert(charArr);
-            }
-            charIndex = -1;
-            memset (charArr, '\0', sizeof(char) * MAXCHARS);
+            PushWord (charArr, charIndex, words);
+            ResetVars(charArr, charIndex, continueWord);
         }
     }
 
-    //string output;
-
     iterEnd = words.end();
     for (iter = words.begin(); iter != iterEnd; ++iter) {
-        //output = (*iter);
-        //cout << "Debug: " << " str= " << output << " len= " << strlen(output.c_str()) << endl;
         cout << (*iter) << endl;
     }
     return 0;
