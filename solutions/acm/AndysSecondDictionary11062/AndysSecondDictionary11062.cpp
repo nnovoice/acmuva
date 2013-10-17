@@ -16,7 +16,7 @@ void ResetVars(char charArr[MAXCHARS], int& charIndex, bool& continueWord)
 void PushWord(char charArr[MAXCHARS], int charIndex, set<string>& words)
 {
     if (charIndex != -1) {
-        // If '-' occurs without a suffix (for instance hello-), remove all such '-' chars
+        // If '-' occurs without a suffix ( for instance "hello-" ), remove all such '-' chars
         while (charArr[charIndex] == '-') {
             --charIndex;
         }
@@ -69,25 +69,18 @@ int main()
                 charArr[++charIndex] = c;
             }
             else if (c == '-') {
-                if (i != (len - 1)) {
-                    if (IsLetter(prevChar) == true) {
+                if (IsLetter(prevChar) == true) {
+                    if (i != (len - 1)) {
                         charArr[++charIndex] = c;
                     }
                     else {
-                        // Push word is required here because if we get a '-' that is out of place
-                        PushWord (charArr, charIndex, words);
-                        ResetVars(charArr, charIndex, continueWord);
+                        continueWord = true;
                     }
                 }
                 else {
-                    if (IsLetter(prevChar) == true) {
-                        continueWord = true;
-                    }
-                    else {
-                        // Push word is required here because if we get a '-' that is out of place
-                        PushWord (charArr, charIndex, words);
-                        ResetVars(charArr, charIndex, continueWord);
-                    }
+                     // Push word is required here because if we get a '-' that is out of place
+                    PushWord (charArr, charIndex, words);
+                    ResetVars(charArr, charIndex, continueWord);
                 }
             }
             else {
