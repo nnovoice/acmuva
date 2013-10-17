@@ -54,7 +54,6 @@ int main()
     int charIndex = -1;
     bool continueWord = false;
 
-    //while (cin.getline(input, MAXCHARS)) {
     while (cin >> input) {
         int len = strlen(input);
         if (len == 0) continue;
@@ -71,25 +70,38 @@ int main()
             }
             else if (c == '-') {
                 if (i != (len - 1)) {
-                    prevChar = charArr[charIndex];
                     if (IsLetter(prevChar) == true) {
                         charArr[++charIndex] = c;
                     }
+                    else {
+                        // Push word is required here because if we get a '-' that is out of place
+                        PushWord (charArr, charIndex, words);
+                        ResetVars(charArr, charIndex, continueWord);
+                    }
                 }
                 else {
-                    continueWord = true;
+                    if (IsLetter(prevChar) == true) {
+                        continueWord = true;
+                    }
+                    else {
+                        // Push word is required here because if we get a '-' that is out of place
+                        PushWord (charArr, charIndex, words);
+                        ResetVars(charArr, charIndex, continueWord);
+                    }
                 }
             }
-            else { // LEARNING: a word is a set of consecutive alphabets. If we get anything else, the word ends
+            else {
+                // LEARNING: a word is a set of consecutive alphabets. If we get anything else, the word ends
+                // Push word is required here because if we get "hell:oo", need to consider "hell" and "oo"
+                // as 2 separate words
                 PushWord (charArr, charIndex, words);
-
                 ResetVars(charArr, charIndex, continueWord);
             }
+
+            prevChar = input[i];
         }
 
         // LEARNING: if we get a set of chars which are non-alphabets, don't add without this check
-        // Push word id required here because if we get "hell:oo", we will have to consider hello and oo
-        // as 2 separate words
         if (charIndex != -1 && continueWord == false) {
             PushWord (charArr, charIndex, words);
             ResetVars(charArr, charIndex, continueWord);
