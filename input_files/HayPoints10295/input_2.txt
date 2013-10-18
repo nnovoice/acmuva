@@ -1,0 +1,22 @@
+8 8
+administer 100000
+spending 200000
+manage 50000
+responsibility 25000
+expertise 100
+skill 50
+money 75000
+kaasu 1
+.
+.
+.
+.
+kaasu
+.
+panam
+.
+duddu
+.
+money
+money
+.
