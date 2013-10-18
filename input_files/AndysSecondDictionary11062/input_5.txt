@@ -1,0 +1,10 @@
+Also words may be hyphenated. When a word is hyphenated, its prefix initiates on a line, followed by hyphen character, maybe followed by a newline, followed by the rest of the word. The rest of the word may be itself hyphenated. The hyphen character is part of the word if, and only if, not followed by a newline. 
+
+prefix-ok
+prefix-
+suffix-ok
+prefix-
+rest-of-
+the-word
+few-:-worlds-are-like:::this
+it's fun
