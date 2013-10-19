@@ -2,9 +2,8 @@
 #include <string>
 #include <map>
 #include <cmath>
+#include <cstdio>
 using namespace std;
-
-const double EPSILON = 1e-9;
 
 int main()
 {
@@ -13,17 +12,22 @@ int main()
     cin >> nParties >> nGuesses;
 
     string partyName;
-    double votePercentage;
-    map<string, double> partyVotePercentagesMap;
+    int votePercentage;
+    int tensValue = 0;
+    int decimalValue = 0;
+    map<string, int> partyVotePercentagesMap;
 
     for (int i = 0; i < nParties; ++i) {
-        cin >> partyName >> votePercentage;
+        cin >> partyName;
+
+        scanf("%d.%d", &tensValue, &decimalValue);
+        votePercentage = 10 * tensValue + decimalValue;
         partyVotePercentagesMap[partyName] = votePercentage;
     }
 
-    double total = 0.0;
+    int total = 0.0;
     string operation;
-    double guessVotePercentage = 0.0;
+    int guessVotePercentage = 0.0;
     bool guess = false;
 
     for (int j = 0; j < nGuesses; ++j) {
@@ -33,21 +37,26 @@ int main()
         //  A guess has the form P1 + P2 + ... + Pk COMP n
         while (true) {
             cin >> partyName;
+            //cout << partyName << " ";
 
             total += partyVotePercentagesMap[partyName];
 
             cin >> operation;
+            //cout << " " << operation;
 
             if (operation == "+") continue;
             else break;
         }
 
-        cin >> guessVotePercentage;
+
+        scanf("%d", &guessVotePercentage);
+        guessVotePercentage *= 10;
+        //cout << " " << guessVotePercentage << " " << endl;
         //cout << "Debug: " << "total= " << total << " op " << operation << " guess= " << guessVotePercentage << endl;
 
         // comparison operators <, >, <=, >= or =
         if (operation == "=") {
-            if (fabs(total - guessVotePercentage) <= EPSILON)
+            if ((total - guessVotePercentage) == 0)
                 guess = true;
         }
         else if (operation == "<") {
@@ -55,27 +64,19 @@ int main()
                 guess = true;
         }
         else if (operation == "<=") {
-            if (total < guessVotePercentage)
+            if (total <= guessVotePercentage)
                 guess = true;
-            else {
-                if (fabs(total - guessVotePercentage) <= EPSILON)
-                    guess = true;
-            }
         }
         else if (operation == ">") {
             if (total > guessVotePercentage)
                 guess = true;
         }
         else if (operation == ">=") {
-            if (total > guessVotePercentage)
+            if (total >= guessVotePercentage)
                 guess = true;
-            else {
-                if (fabs(total - guessVotePercentage) <= EPSILON)
-                    guess = true;
-            }
         }
 
-        cout << "Guess# " << (j + 1) << " was ";
+        cout << "Guess #" << (j + 1) << " was ";
         if (guess)
             cout << "correct." << endl;
         else
