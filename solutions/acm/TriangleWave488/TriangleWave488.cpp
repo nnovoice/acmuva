@@ -8,24 +8,25 @@ int main()
 
     scanf("%d", &nCases);
 
-    for (int idx = 0; idx < nCases; ++idx) {
-        if (idx > 0) printf("\n\n");
+    for (int caseIndex = 0; caseIndex < nCases; ++caseIndex) {
+        if (caseIndex > 0) printf("\n");
 
         scanf("%d", &amplitude);
         scanf("%d", &frequency);
 
-        for (int i = 0; i < frequency; ++i) {
-            if (i > 0) printf("\n\n");
+        for (int i = 1; i <= frequency; ++i) {
+            if (i > 1) printf("\n");
 
             for(int j = 1; j <= amplitude; ++j) {
                 for (int k = 1; k <= j; ++k)
                     printf("%d", j);
                 printf("\n");
             }
-            for(int j = (amplitude - 1); j >= 0; --j) {
+            for(int j = (amplitude - 1); j >= 1; --j) {
                 for (int k = 1; k <= j; ++k)
                     printf("%d", j);
-                if (j > 1) printf("\n");
+                //if (j != 1)
+                printf("\n");
             }
         }
     }
