@@ -1,0 +1,139 @@
+1
+2 10 10 #2 cars at once, 10 min to go from left to right and back, 10 lines in the input
+0 left
+0 left
+0 left
+0 left
+0 right
+0 right
+0 right
+0 right
+0 left
+0 right
+
+insert left cars into left cars Queue
+insert right cars into right cars Queue
+all cars Queue will have all the car IDs
+
+read 0, left ==> assign car ID as 0. insert car into left car times map, insert into left car IDs map
+read 0, left ==> assign car ID as 1. insert car into left car times map, insert into left car IDs map
+read 0, left ==> assign car ID as 2. insert car into left car times map, insert into left car IDs map
+read 0, left ==> assign car ID as 3. insert car into left car times map, insert into left car IDs map
+read 0, right==> assign car ID as 4. insert car into RIGHT car times map, insert into RIGHT car IDs map
+read 0, right==> assign car ID as 5. insert car into RIGHT car times map, insert into RIGHT car IDs map
+read 0, right==> assign car ID as 6. insert car into RIGHT car times map, insert into RIGHT car IDs map
+read 0, right==> assign car ID as 7. insert car into RIGHT car times map, insert into RIGHT car IDs map
+read 0, right==> assign car ID as 8. insert car into RIGHT car times map, insert into RIGHT car IDs map
+read 0, left ==> assign car ID as 9. insert car into left car times map, insert into left car IDs map
+read 0, right==> assign car ID as 10.insert car into RIGHT car times map, insert into RIGHT car IDs map
+
+left car times map:
+key value
+0   0, 1, 2, 3, 8
+
+right car times map:
+key value
+0   4, 5, 6, 7, 9
+
+left car IDs map
+key value
+0   0
+1   0
+2   0
+3   0
+8   0
+
+right car IDs map
+key value
+4   0
+5   0
+6   0
+7   0
+9   0
+
+left cars Queue
+0 0 0 0 0
+
+right cars Queue
+0 0 0 0 0
+
+all car IDs Queue
+0 1 2 3 4 5 6 7 8 9
+
+------------------------------
+
+
+left. time=0.  pick 2 cars from left (0,0). drop at right. time=10.
+right.time=10. pick 2 cars from right(0,0). drop at left.  time=20.
+left. time=20. pick 2 cars from left (0,0). drop at right. time=30.
+right.time=30. pick 2 cars from right(0,0). drop at left.  time=40.
+left. time=40. pick 1 car  from left (0  ). drop at right. time=50.
+right.time=50. pick 1 car  from right(0  ). drop at left.  time=60.
+left.
+END
+
+10
+10
+30
+30
+20
+20
+40
+40
+50
+60
+
+1 10 10
+0 left
+0 left
+0 left
+0 left
+0 right
+0 right
+0 right
+0 right
+0 left
+0 right
+
+left. time=0.  pick 1 car from left (0). drop at right.  time=10.
+right.time=10. pick 1 car from right(0). drop at left.   time=20.
+left. time=20. pick 1 car from left (0). drop at right.  time=30.
+right.time=30. pick 1 car from right(0). drop at left.   time=40
+left. time=40. pick 1 car from left (0). drop at right.  time=50
+right.time=50. pick 1 car from right(0). drop at left.   time=60
+left. time=60. pick 1 car from left (0). drop at right.  time=70
+right.time=70. pick 1 car from right(0). drop at left.   time=80
+left. time=80. pick 1 car from left (0). drop at right.  time=90
+right.time=90. pick 1 car from right(0). drop at left.   time=100
+
+2 10 10
+0 left
+0 left
+0 left
+0 left
+0 right
+0 right
+0 right
+0 right
+90 left
+0 right
+
+left. time=0.  pick 2 cars from left (0,0). drop at right. time=10.
+right.time=10. pick 2 cars from right(0,0). drop at left.  time=20.
+left. time=20. pick 2 cars from left (0,0). drop at right. time=30.
+right.time=30. pick 2 cars from right(0,0). drop at left.  time=40.
+left. time=40. Wait? Move to other bank? 1 car waiting on other bank. move right. time=50.
+right.time=50. pick 1 car from right(0).    drop at left.  time=60.
+left. time=60. wait? Move to other bank? no cars on right. Wait. time=90.
+left. time=90. pick 1 car from left (90).   drop at right. time=100.
+10
+10
+30
+30
+20
+20
+40
+40
+100
+60 
+  
