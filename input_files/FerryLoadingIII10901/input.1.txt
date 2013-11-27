@@ -1,0 +1,17 @@
+2
+2 10 10
+0 left
+0 left
+0 left
+0 left
+40 left
+0 right
+0 right
+0 right
+80 right
+90 left
+1 10 4
+10 right
+10 right
+25 left
+40 left
