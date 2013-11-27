@@ -154,7 +154,7 @@ int main()
     map<int, list<int>* > rightBankCarTimesMap;
     map<int, list<int>* > rightBankCarIDsMap;
     map<int, int> carIDsToDropTimesMap;
-	int carID = 0;
+    int carID = 0;
 
     bank ferryBank = leftbank;
 
