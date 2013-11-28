@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-const int MAXDEVICES = 21; // 1 more than the actual because we will use index from 1
+const int MAXDEVICES = 2001; // 1 more than the actual because we will use index from 1
 
 int main()
 {
@@ -16,10 +16,8 @@ int main()
     int maxConsumedCapacity = 0;
     bool fuseBlown = false;
 
-    while (scanf("%d %d %d", &nDevices, &mOperations, &maxCapacity) != EOF) {
+    while (scanf("%d%d%d", &nDevices, &mOperations, &maxCapacity) != EOF) {
         if ((nDevices == 0) && (mOperations == 0) && (maxCapacity == 0)) break;
-
-        if (sequenceNum > 0) printf("\n");
 
         memset(deviceStates, false, sizeof(bool) * MAXDEVICES);
         memset(capacities, 0, sizeof(int) * MAXDEVICES);
@@ -40,6 +38,7 @@ int main()
                 else {
                     consumedCapacity -= capacities[deviceNum];
                 }
+                //printf ("Debug: consumed=%d\n", consumedCapacity);
 
                 if (consumedCapacity > maxCapacity) {
                     fuseBlown = true;
@@ -61,6 +60,7 @@ int main()
             printf ("Fuse was not blown.\n");
             printf ("Maximal power consumption was %d amperes.\n", maxConsumedCapacity);
         }
+        printf("\n"); // blank lin after each test case.
     }
     return 0;
 }
