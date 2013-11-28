@@ -1,7 +1,5 @@
-#include <iostream>
+#include <stdio.h>
 #include <string.h>
-
-using namespace std;
 
 const int MAXDEVICES = 21; // 1 more than the actual because we will use index from 1
 
@@ -18,10 +16,10 @@ int main()
     int maxConsumedCapacity = 0;
     bool fuseBlown = false;
 
-    while (cin >> nDevices >> mOperations >> maxCapacity) {
+    while (scanf("%d %d %d", &nDevices, &mOperations, &maxCapacity) != EOF) {
         if ((nDevices == 0) && (mOperations == 0) && (maxCapacity == 0)) break;
 
-        if (sequenceNum > 0) cout << endl;
+        if (sequenceNum > 0) printf("\n");
 
         memset(deviceStates, false, sizeof(bool) * MAXDEVICES);
         memset(capacities, 0, sizeof(int) * MAXDEVICES);
@@ -30,10 +28,10 @@ int main()
         fuseBlown = false;
 
         // start index at 1
-        for (int i = 1; i <= nDevices; ++i) cin >> capacities[i];
+        for (int i = 1; i <= nDevices; ++i) scanf("%d", &capacities[i]);
 
         for (int i = 0; i < mOperations; ++i) {
-            cin >> deviceNum;
+            scanf("%d", &deviceNum);
             if (fuseBlown == false) {
                 deviceStates[deviceNum] = (deviceStates[deviceNum] == true) ? false : true;
                 if (deviceStates[deviceNum] == true) {
@@ -54,13 +52,14 @@ int main()
             }
         }
 
-        cout << "Sequence " << ++sequenceNum << endl;
+        ++sequenceNum;
+        printf ("Sequence %d\n", sequenceNum);
         if (fuseBlown == true) {
-            cout << "Fuse was blown." << endl;
+            printf ("Fuse was blown.\n");
         }
         else {
-            cout << "Fuse was not blown." << endl;
-            cout << "Maximal power consumption was " << maxConsumedCapacity << " amperes." << endl;
+            printf ("Fuse was not blown.\n");
+            printf ("Maximal power consumption was %d amperes.\n", maxConsumedCapacity);
         }
     }
     return 0;
