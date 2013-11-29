@@ -6,10 +6,10 @@ const int MAXLINELENGTH = 1025;
 
 int main()
 {
-    int nLeftMaleConnectors = 0;
-    int nLeftFemaleConnectors = 0;
-    int nRightMaleConnectors = 0;
-    int nRightFemaleConnectors = 0;
+    int nFMConnectors = 0;
+    int nFFConnectors = 0;
+    int nMMConnectors = 0;
+    int nTotalConnectors = 0;
     char connectors[MAXLINELENGTH] = {'\0'};
     int nCases = 0;
     int j = 0;
@@ -17,54 +17,41 @@ int main()
     cin >> nCases;
     cin.getline(connectors, MAXLINELENGTH);
     for (int i = 0; i < nCases; ++i) {
-        nLeftMaleConnectors = 0;
-        nLeftFemaleConnectors = 0;
-        nRightMaleConnectors = 0;
-        nRightFemaleConnectors = 0;
+        nFMConnectors = 0;
+        nFFConnectors = 0;
+        nMMConnectors = 0;
+        nTotalConnectors = 0;
+
         cin.getline(connectors, MAXLINELENGTH);
-        //scanf("%[^\n]", connectors);
-        //cout << "Debug: " << connectors << endl;
-        //printf("Debug: %s\n", connectors);
+
         j = 0;
         while (connectors[j] != '\0') {
             if (connectors[j] == ' ') {
                 ++j;
                 continue;
             }
-            switch (connectors[j]) {
-            case 'M':
-                nLeftMaleConnectors += 1;
-                break;
-            case 'F':
-                nLeftFemaleConnectors += 1;
-                break;
-            default:
-                break;
-            }
 
-            switch (connectors[j + 1]) {
-            case 'M':
-                nRightMaleConnectors += 1;
-                break;
-            case 'F':
-                nRightFemaleConnectors += 1;
-                break;
-            default:
-                break;
+            if (connectors[j] == 'M') {
+                if (connectors[j + 1] == 'M') {
+                    ++nMMConnectors;
+                }
+                else {
+                    ++nFMConnectors;
+                }
             }
-
+            else {
+                if (connectors[j + 1] == 'M') {
+                    ++nFMConnectors;
+                }
+                else {
+                    ++nFFConnectors;
+                }
+            }
             j += 2;
         }
 
-        //printf("Debug: LeftM=%d, RightF=%d, LeftF=%d, RightM=%d\n", \
-        //       nLeftMaleConnectors, nRightFemaleConnectors, nLeftFemaleConnectors, nRightMaleConnectors);
-
-        //cin.getline(connectors, MAXLINELENGTH);
-        //scanf("%[^\n]", connectors);
-        //cout << "Debug: again" << connectors << endl;
-        //printf("Debug: %s\n", connectors);
-        if ((nLeftMaleConnectors == nRightFemaleConnectors) &&
-            (nRightMaleConnectors == nLeftFemaleConnectors))
+        nTotalConnectors = nFMConnectors + nFFConnectors + nMMConnectors;
+        if ((nTotalConnectors > 1) && (nFFConnectors == nMMConnectors))
             printf("LOOP\n");
         else
             printf("NO LOOP\n");
