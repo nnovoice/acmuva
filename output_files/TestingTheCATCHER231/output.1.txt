@@ -1,0 +1,14 @@
+Test #1:
+  maximum possible interceptions: 8
+
+Test #2:
+  maximum possible interceptions: 2
+
+Test #3:
+  maximum possible interceptions: 8
+
+Test #4:
+  maximum possible interceptions: 2
+
+Test #5:
+  maximum possible interceptions: 8
