@@ -19,7 +19,6 @@ int GetMissilesIntercepted(int nMissiles)
                         nMaxMissilesIntercepted =  curMissilesIntercepted;
                     }
                 }
-                //break;
             }
         }
     }
