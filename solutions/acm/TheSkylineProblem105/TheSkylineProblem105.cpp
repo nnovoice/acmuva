@@ -105,7 +105,7 @@ int main()
         }
     }
     rightmost = right + 2; // to find the end
-    PrintBuildings(leftmost, rightmost);
+    ///PrintBuildings(leftmost, rightmost);
     TraceSkyline(leftmost, rightmost);
     return 0;
 }
