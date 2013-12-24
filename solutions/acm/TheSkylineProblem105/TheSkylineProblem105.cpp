@@ -23,11 +23,6 @@ void TraceSkyline(int leftmost, int rightmost) {
     int curHeight = 0;
     int nextHeight = 0;
 
-    /// print x -> the co-ordinate where the max(curHeight, nextHeight)
-    /// print y -> the max(curHeight, nextHeight)
-    /// If there is an intersection (detect via the change in the buildings height
-    /// and the two buildings intersect at the same height, then the intersection
-    /// must be printed
     int x = leftmost - 1;
     while (x <= rightmost) {
         curHeight = skyline[x][top];
@@ -104,8 +99,8 @@ int main()
             }
         }
     }
-    rightmost = right + 2; // to find the end
-    ///PrintBuildings(leftmost, rightmost);
+    rightmost = right + 1; // to find the end
+    PrintBuildings(leftmost, rightmost);
     TraceSkyline(leftmost, rightmost);
     return 0;
 }
