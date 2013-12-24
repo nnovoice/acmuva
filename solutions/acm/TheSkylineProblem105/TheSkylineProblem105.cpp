@@ -28,65 +28,72 @@ void TraceSkyline(int leftmost, int rightmost) {
     /// If there is an intersection (detect via the change in the buildings height
     /// and the two buildings intersect at the same height, then the intersection
     /// must be printed
-    int left = leftmost - 1;
-    while (left <= rightmost) {
-        /// traverse until a building is found
-        while (left <= rightmost && skyline[left][bot] == 0 && skyline[left][top] == 0) {
-            ++left;
-            continue;
-        }
-
-        if (left == rightmost) break;
-
-        printf("%d ", left);
-        printf("%d ", skyline[left][top]);
-
-        curHeight = skyline[left][top];
+    int x = leftmost - 1;
+    while (x <= rightmost) {
+        curHeight = skyline[x][top];
 
         /// traverse until there is a height change
-        for (int i = left + 1; i <= rightmost; ++i) {
+        for (int i = x + 1; i <= rightmost; ++i) {
             nextHeight = skyline[i][top];
             if (curHeight != nextHeight) {
-                left = i;
+                x = i - 1;
                 break;
             }
         }
 
+        if (x == rightmost) break;
+
         /// do we have an intersection?
-        if (skyline[left][bot] > 0 &&
-            skyline[left + 1][bot] > 0 &&
-            skyline[left][bot] == skyline[left + 1][bot])
+        if (skyline[x][bot] > 0 &&
+            skyline[x + 1][bot] > 0 &&
+            skyline[x][bot] == skyline[x + 1][bot])
         {
-            printf("%d ", left);
-            printf("%d ", skyline[left][bot]);
+            printf("%d ", x);
+            printf("%d ", skyline[x][bot]);
+
+            printf("%d ", x + 1);
+            printf("%d ", skyline[x + 1][top]);
+
+            x += 1;
         }
-        else {
-            if (skyline[left][top] > skyline[left + 1][top]) {
-                printf("%d ", left);
-                printf("%d ", skyline[left][bot]);
+        else if (skyline[x][top] > skyline[x + 1][top]) {
+             if (skyline[x][bot] == skyline[x + 1][top] &&
+                 skyline[x][bot] > 0)
+            {
+                printf("%d ", x);
+                printf("%d ", skyline[x][bot]);
             }
             else {
-                printf("%d ", left + 1);
-                printf("%d ", skyline[left + 1][bot]);
+                printf("%d ", x);
+                if (skyline[x + 1][top] == 0 && skyline[x + 1][bot] == 0)
+                    printf("%d ", 0);
+                else
+                    printf("%d ", skyline[x][top]);
             }
-        }
 
-        left += 1;
+            x += 1;
+        }
+        else {
+            printf("%d ", x + 1);
+            printf("%d ", skyline[x + 1][top]);
+
+            x += 2;
+        }
     }
     printf("\n");
 }
 
 int main()
 {
-    int left = 0, height = 0, right = 0;
+    int x = 0, height = 0, right = 0;
     int leftmost = 0;
     int rightmost = 0;
     int buildingNum = 0;
     //PrintBuildings(1, 30);
-    while (scanf("%d %d %d", &left, &height, &right) != EOF) {
-        if (buildingNum == 0) leftmost = left;
+    while (scanf("%d %d %d", &x, &height, &right) != EOF) {
+        if (buildingNum == 0) leftmost = x;
         ++buildingNum;
-        for (int i = left; i <= right; ++i) {
+        for (int i = x; i <= right; ++i) {
             if (skyline[i][top] < height) {
                 skyline[i][bot] = skyline[i][top];
                 skyline[i][top] = height;
