@@ -1,104 +1,150 @@
 #include <stdio.h>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-int skyline[5005][2];
-const int top = 1;
-const int bot = 0;
+const int MAXBUILDINGS = 5002;
+int skyline[MAXBUILDINGS];
+int buildingHeights[MAXBUILDINGS];
+vector<int> buildingIDs[MAXBUILDINGS];
 
-void PrintBuildings(int leftmost, int rightmost) {
+void PrintBuildings(int leftmost, int rightmost)
+{
+    vector<int>* pBuildingIDsList = 0;
+    vector<int>::iterator li;
+    vector<int>::iterator le;
     for (int i = leftmost; i <= rightmost; ++i) {
-        printf("%5d", skyline[i][top]);
+        printf("%5d", skyline[i]);
     }
     printf("\n");
+    printf("Building IDs:\n");
     for (int i = leftmost; i <= rightmost; ++i) {
-        printf("%5d", skyline[i][bot]);
-    }
-    printf("\n");
-    for (int i = leftmost; i <= rightmost; ++i) {
-        printf("%5d", i);
+        pBuildingIDsList = &buildingIDs[i];
+        printf("Height=%5d: {IDs=", skyline[i]);
+
+        li = pBuildingIDsList->begin();
+        le = pBuildingIDsList->end();
+        for(; li != le; ++li) {
+            printf("%d,", *li);
+        }
+        printf("}\n");
     }
     printf("\n");
 }
 
-void TraceSkyline(int leftmost, int rightmost) {
-    int curHeight = 0;
-    int nextHeight = 0;
-
-    int x = leftmost - 1;
-    while (x <= rightmost) {
-        curHeight = skyline[x][top];
-
-        /// traverse until there is a height change
-        for (int i = x + 1; i <= rightmost; ++i) {
-            nextHeight = skyline[i][top];
-            if (curHeight != nextHeight) {
-                x = i - 1;
-                break;
-            }
-        }
-
-        if (x == rightmost) break;
-
-        /// do we have an intersection?
-        if (skyline[x][bot] > 0 &&
-            skyline[x + 1][bot] > 0 &&
-            skyline[x][bot] == skyline[x + 1][bot])
-        {
-            printf("%d ", x);
-            printf("%d ", skyline[x][bot]);
-
-            printf("%d ", x + 1);
-            printf("%d ", skyline[x + 1][top]);
-
-            x += 1;
-        }
-        else if (skyline[x][top] > skyline[x + 1][top]) {
-             if (skyline[x][bot] == skyline[x + 1][top] &&
-                 skyline[x][bot] > 0)
-            {
-                printf("%d ", x);
-                printf("%d ", skyline[x][bot]);
-            }
-            else {
-                printf("%d ", x);
-                if (skyline[x + 1][top] == 0 && skyline[x + 1][bot] == 0)
-                    printf("%d ", 0);
-                else
-                    printf("%d ", skyline[x][top]);
-            }
-
-            x += 1;
-        }
-        else {
-            printf("%d ", x + 1);
-            printf("%d ", skyline[x + 1][top]);
-
-            x += 2;
+bool GetMaxHeightOfCommonBuildings (vector<int>* pVX, vector<int>* pVNextX)
+{
+    int maxHeight = 0;
+    vector<int>::iterator vxi = pVX->begin();
+    vector<int>::iterator vxe = pVX->end();
+    vector<int>::iterator vNextIter;
+    for(; vxi != vxe; ++vxi) {
+        vNextIter = find (pVNextX->begin(), pVNextX->end(), *vxi);
+        if (vNextIter != pVNextX->end()) {
+            if (maxHeight < buildingHeights[*vxi])
+                maxHeight = buildingHeights[*vxi];
         }
     }
-    printf("\n");
+    return maxHeight;
+}
+
+bool HaveCommonBuildings (vector<int>* pVX, vector<int>* pVNextX)
+{
+    vector<int>::iterator vxi = pVX->begin();
+    vector<int>::iterator vxe = pVX->end();
+    for(; vxi != vxe; ++vxi) {
+        if (find (pVNextX->begin(), pVNextX->end(), *vxi) != pVNextX->end()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void TraceSkyline(int leftmost, int rightmost)
+{
+    vector<int>* pVX = 0;
+    vector<int>* pVNextX = 0;
+    int x = leftmost - 1;
+    int nextX = 0;
+    bool shareCommonBuildings = false;
+    int maxHeightOfCommonBuildings = 0;
+
+    while (x <= rightmost) {
+        if (skyline[x] == 0) ++x;
+        else break;
+    }
+
+    if (x <= rightmost) {
+        printf("%d %d ", x, skyline[x]);
+        ++x;
+    }
+
+    while (x <= rightmost) {
+        nextX = x + 1;
+        if (nextX > rightmost) break;
+
+        pVX = &buildingIDs[x];
+        pVNextX = &buildingIDs[nextX];
+        shareCommonBuildings = HaveCommonBuildings(pVX, pVNextX);
+        maxHeightOfCommonBuildings = GetMaxHeightOfCommonBuildings(pVX, pVNextX);
+
+        if (skyline[x] == skyline[nextX]) {
+            if (shareCommonBuildings) {
+                printf("%d %d ", x, maxHeightOfCommonBuildings);
+                ++x;
+            }
+            else {
+                printf("%d %d ", x, 0);
+                ++x;
+            }
+        }
+        else {
+            if (shareCommonBuildings) {
+                printf("%d %d ", x, maxHeightOfCommonBuildings);
+                printf("%d %d ", nextX, skyline[nextX]);
+                x += 2;
+            }
+            else {
+                printf("%d %d ", x, 0);
+                ++x;
+            }
+        }
+
+        if (skyline[x] == 0) {
+            while (x <= rightmost) {
+                if (skyline[x] == 0) ++x;
+                else break;
+            }
+            if (x <= rightmost) {
+                printf("%d %d ", x, skyline[x]);
+                ++x;
+            }
+        }
+    }
+    printf("%d\n", 0);
 }
 
 int main()
 {
-    int x = 0, height = 0, right = 0;
+    int left = 0, height = 0, right = 0;
     int leftmost = 0;
     int rightmost = 0;
-    int buildingNum = 0;
-    //PrintBuildings(1, 30);
-    while (scanf("%d %d %d", &x, &height, &right) != EOF) {
-        if (buildingNum == 0) leftmost = x;
-        ++buildingNum;
-        for (int i = x; i <= right; ++i) {
-            if (skyline[i][top] < height) {
-                skyline[i][bot] = skyline[i][top];
-                skyline[i][top] = height;
+    int buildingID = 0;
+
+    while (scanf("%d %d %d", &left, &height, &right) != EOF) {
+        if (buildingID == 0) leftmost = left;
+        ++buildingID;
+
+        buildingHeights[buildingID] = height;
+
+        for (int i = left; i <= right; ++i) {
+            if (skyline[i] < height) {
+                skyline[i] = height;
             }
-            else {
-                if (skyline[i][bot] < height)
-                    skyline[i][bot] = height;
-            }
+            buildingIDs[i].push_back(buildingID);
         }
     }
+
     rightmost = right + 1; // to find the end
     PrintBuildings(leftmost, rightmost);
     TraceSkyline(leftmost, rightmost);
