@@ -75,8 +75,6 @@ void TraceSkyline(int leftmost, int rightmost) {
             x += 1;
         }
     }
-
-    printf("\n");
 }
 
 int main()
