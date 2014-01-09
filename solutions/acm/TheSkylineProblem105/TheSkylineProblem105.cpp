@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-const int MAXBUILDINGS = 5005;
-const int MAXZOOMEDBUILDINGS = MAXBUILDINGS * 5;
+const int MAXBUILDINGSCOORDINATE = 10005;
+const int MAXZOOMEDBUILDINGS = MAXBUILDINGSCOORDINATE * 5;
 int skyline[MAXZOOMEDBUILDINGS][2];
 const int top = 1;
 const int bot = 0;
@@ -54,10 +54,13 @@ void TraceSkyline(int leftmost, int rightmost) {
     int nextX = 0;
     int prevX = 0;
 
+    //printf("Debug: ZoomedLeft=%4d ZoomedRight=%4d\n", zoomedLeft, zoomedRight);
+
     while (x <= zoomedRight) {
         /// travel to the first non-zero height building
         while (skyline[x][top] == 0) ++x;
 
+        if (x > zoomedRight) break;
         //printf("Debug: %d %d\n", x, skyline[x][top]);
 
         prevX = x - 1;
@@ -70,6 +73,7 @@ void TraceSkyline(int leftmost, int rightmost) {
 
         nextX = x + 1;
         if (skyline[x][top] != skyline[nextX][top]) {
+            //printf("Debug: inside NOTEQ nextX=%d %d\n", nextX, skyline[nextX][top]);
             printf ("%d %d ", nextX/5, skyline[nextX][top]);
             x += 2;
         }
