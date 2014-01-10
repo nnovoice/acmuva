@@ -1,51 +1,11 @@
 #include <stdio.h>
 
-const int ZOOMFACTOR = 5;
+const int ZOOMFACTOR = 3;
 const int MAXBUILDINGSCOORDINATE = 10010;
 const int MAXZOOMEDBUILDINGS = MAXBUILDINGSCOORDINATE * ZOOMFACTOR;
-int skyline[MAXZOOMEDBUILDINGS][2];
+int skyline[MAXZOOMEDBUILDINGS];
 int coordinates[MAXZOOMEDBUILDINGS];
 int index;
-const int top = 1;
-const int bot = 0;
-
-void PrintBuildings(int leftmost, int rightmost) {
-    int left = leftmost * ZOOMFACTOR;
-    int right = rightmost * ZOOMFACTOR;
-    for (int i = left; i <= right; ++i) {
-        if ((i % ZOOMFACTOR) == 0)
-            printf("%5d", skyline[i][top]);
-    }
-    printf("\n");
-    for (int i = left; i <= right; ++i) {
-        if ((i % ZOOMFACTOR) == 0)
-            printf("%5d", skyline[i][bot]);
-    }
-    printf("\n");
-    for (int i = left; i <= right; ++i) {
-        if ((i % ZOOMFACTOR) == 0)
-            printf("%5d", (i/ZOOMFACTOR));
-    }
-    printf("\n");
-}
-
-void PrintZoomedBuildings(int leftmost, int rightmost) {
-    int left  = leftmost  * ZOOMFACTOR;
-    int right = rightmost * ZOOMFACTOR;
-    printf("ZoomedLeft=%4d ZoomedRight=%4d\n", left, right);
-    for (int i = left; i <= right; ++i) {
-        printf("%4d", skyline[i][top]);
-    }
-    printf("\n");
-    for (int i = left; i <= right; ++i) {
-        printf("%4d", skyline[i][bot]);
-    }
-    printf("\n");
-    for (int i = left; i <= right; ++i) {
-        printf("%4d", i);
-    }
-    printf("\n");
-}
 
 /// The central idea is to store a zoomed in version of the building: 5 times zoomed in :)
 /// That will help in determining the common skyline connection between buildings which is
@@ -58,25 +18,23 @@ void TraceSkyline(int leftmost, int rightmost) {
 
     while (x <= zoomedRight) {
         /// travel to the first non-zero height building
-        while (skyline[x][top] == 0 && x <= zoomedRight) {
+        while (skyline[x] == 0 && x <= zoomedRight) {
             ++x;
         }
 
         if (x > zoomedRight) break;
 
         prevX = x - 1;
-        if (skyline[prevX][top] == 0) {
+        if (skyline[prevX] == 0) {
             coordinates[index] = x/ZOOMFACTOR; ++index;
-            coordinates[index] = skyline[x][top]; ++index;
-            //printf ("%d %d ", x/ZOOMFACTOR, skyline[x][top]);
+            coordinates[index] = skyline[x]; ++index;
         }
 
 
         nextX = x + 1;
-        if (skyline[x][top] != skyline[nextX][top]) {
-            //printf ("%d %d ", nextX/ZOOMFACTOR, skyline[nextX][top]);
+        if (skyline[x] != skyline[nextX]) {
             coordinates[index] = nextX/ZOOMFACTOR; ++index;
-            coordinates[index] = skyline[nextX][top]; ++index;
+            coordinates[index] = skyline[nextX]; ++index;
             x += 2;
         }
         else {
@@ -84,11 +42,11 @@ void TraceSkyline(int leftmost, int rightmost) {
         }
     }
 
-    if (index > 0) {
-        printf("%d", coordinates[0]);
-        for (int i = 1; i < index; ++i)
-            printf(" %d", coordinates[i]);
-    }
+    //if (index > 0) {
+    printf("%d", coordinates[0]);
+    for (int i = 1; i < index; ++i)
+        printf(" %d", coordinates[i]);
+    //}
 
     printf("\n");
 }
@@ -107,13 +65,8 @@ int main()
         zoomedInLeft  = left  * ZOOMFACTOR;
         zoomedInRight = right * ZOOMFACTOR;
         for (int i = zoomedInLeft; i <= zoomedInRight; ++i) {
-            if (skyline[i][top] < height) {
-                skyline[i][bot] = skyline[i][top];
-                skyline[i][top] = height;
-            }
-            else {
-                if (skyline[i][bot] < height)
-                    skyline[i][bot] = height;
+            if (skyline[i] < height) {
+                skyline[i] = height;
             }
         }
     }
