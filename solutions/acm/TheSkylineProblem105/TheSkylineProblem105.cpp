@@ -4,6 +4,8 @@ const int ZOOMFACTOR = 5;
 const int MAXBUILDINGSCOORDINATE = 10010;
 const int MAXZOOMEDBUILDINGS = MAXBUILDINGSCOORDINATE * ZOOMFACTOR;
 int skyline[MAXZOOMEDBUILDINGS][2];
+int coordinates[MAXZOOMEDBUILDINGS];
+int index;
 const int top = 1;
 const int bot = 0;
 
@@ -63,18 +65,32 @@ void TraceSkyline(int leftmost, int rightmost) {
         if (x > zoomedRight) break;
 
         prevX = x - 1;
-        if (skyline[prevX][top] == 0)
-            printf ("%d %d ", x/ZOOMFACTOR, skyline[x][top]);
+        if (skyline[prevX][top] == 0) {
+            coordinates[index] = x/ZOOMFACTOR; ++index;
+            coordinates[index] = skyline[x][top]; ++index;
+            //printf ("%d %d ", x/ZOOMFACTOR, skyline[x][top]);
+        }
+
 
         nextX = x + 1;
         if (skyline[x][top] != skyline[nextX][top]) {
-            printf ("%d %d ", nextX/ZOOMFACTOR, skyline[nextX][top]);
+            //printf ("%d %d ", nextX/ZOOMFACTOR, skyline[nextX][top]);
+            coordinates[index] = nextX/ZOOMFACTOR; ++index;
+            coordinates[index] = skyline[nextX][top]; ++index;
             x += 2;
         }
         else {
             x += 1;
         }
     }
+
+    if (index > 0) {
+        printf("%d", coordinates[0]);
+        for (int i = 1; i < index; ++i)
+            printf(" %d", coordinates[i]);
+    }
+
+    printf("\n");
 }
 
 int main()
