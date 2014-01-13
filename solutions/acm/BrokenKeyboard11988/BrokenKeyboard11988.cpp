@@ -58,7 +58,7 @@ int main()
         }
     }
 
-    //printf ("Debug: %s num words=%d\n", word.c_str(), words.size());
+    //printf ("Debug: %s num words=%d\n", word.c_str(), words.size());;
 
     if (words.size() > 0) {
         if (word.size() > 0)
