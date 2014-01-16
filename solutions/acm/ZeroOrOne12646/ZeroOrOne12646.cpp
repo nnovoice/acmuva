@@ -6,6 +6,7 @@ int main()
     int occurrences[2] = {0};
     int count = 0;
     int index = 0;
+    char c = ' ';
     while (scanf("%d %d %d", &A, &B, &C) != EOF) {
         occurrences[0] = 0;
         occurrences[1] = 0;
@@ -18,7 +19,7 @@ int main()
         occurrences[C] += 1;
 
         if (occurrences[0] == 3 || occurrences[1] == 3) {
-            printf("*\n");
+            c = '*'; //printf("*\n");
         }
         else {
             count = occurrences[0];
@@ -29,15 +30,16 @@ int main()
             }
 
             if (index == A) {
-                printf("A\n");
+                c = 'A'; //printf("A\n");
             }
             else if (index == B) {
-                printf("B\n");
+                c = 'B'; //printf("B\n");
             }
             else {
-                printf("C\n");
+                c = 'C'; //printf("C\n");
             }
         }
+        printf("%c\n", c);
     }
     return 0;
 }
