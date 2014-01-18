@@ -42,11 +42,13 @@ bool IsLeapYear (int year)
 {
     bool isLeap = false;
     if (year % 4 == 0) {
-        if (((year % 100) == 0) && ((year % 400) == 0))
+        if ((year % 100) != 0) {
             isLeap = true;
+        }
         else {
-            if ((year % 100) != 0)
+            if ((year % 400) == 0) {
                 isLeap = true;
+            }
         }
     }
     return isLeap;
@@ -84,7 +86,14 @@ int main()
 
         nLeapDays = 0;
         for (int year = startYear; year <= endYear; year += 4) {
-            if (IsLeapYear(year)) ++nLeapDays;
+            if ((year % 100) == 0) {
+                if ((year % 400) == 0) {
+                    ++nLeapDays;
+                }
+            }
+            else {
+                ++nLeapDays;
+            }
         }
 
         startMonthNum = GetMonthNumber(startMonthName);
@@ -93,7 +102,7 @@ int main()
         //printf("Debug: end month num= %d\n", endMonthNum);
 
         /// does the date range include feb 29?
-        if (startYear == endYear && IsLeapYear(startYear)) {
+        if (startYear == endYear && IsLeapYear(startYear) != 0) {
             if (startMonthNum < 2) {
                 if (endMonthNum < 2) {
                     nLeapDays = 0;
@@ -142,7 +151,6 @@ int main()
         }
         printf("Case %d: %d\n", caseNum, nLeapDays);
     }
-
     return 0;
 }
 
