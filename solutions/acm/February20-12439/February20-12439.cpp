@@ -55,23 +55,25 @@ bool IsLeapYear (int year)
 int main()
 {
     int nCases = 0;
-    char startMonth[15] = {'\0'};
+    char startMonthName[15] = {'\0'};
     int startMonthNum = 0;
     int startMonthDay = 0;
     int startYear = 0;
 
-    char endMonth[15] = {'\0'};
+    char endMonthName[15] = {'\0'};
     int endMonthNum = 0;
     int endMonthDay = 0;
     int endYear = 0;
 
-    int nLeapYears = 0;
     int nLeapDays = 0;
 
     scanf("%d", &nCases);
     for (int caseNum = 1; caseNum <= nCases; ++caseNum) {
-        scanf("%s %d, %d", startMonth, &startMonthDay, &startYear);
-        scanf("%s %d, %d", endMonth, &endMonthDay, &endYear);
+        scanf("%s %d, %d", startMonthName, &startMonthDay, &startYear);
+        scanf("%s %d, %d", endMonthName, &endMonthDay, &endYear);
+
+        //printf("Debug: %s %d, %d\n", startMonthName, startMonthDay, startYear);
+        //printf("Debug: %s %d, %d\n", endMonthName, endMonthDay, endYear);
 
         if ((startYear % 4) != 0) {
             for (int j = 1; j < 4; ++j) {
@@ -80,16 +82,18 @@ int main()
             }
         }
 
+        nLeapDays = 0;
         for (int year = startYear; year <= endYear; year += 4) {
-            if (IsLeapYear(year)) ++nLeapYears;
+            if (IsLeapYear(year)) ++nLeapDays;
         }
 
-        startMonthNum = GetMonthNumber(startMonth);
-        endMonthNum   = GetMonthNumber(endMonth);
-        nLeapDays = 0;
+        startMonthNum = GetMonthNumber(startMonthName);
+        endMonthNum   = GetMonthNumber(endMonthName);
+        //printf("Debug: start month num= %d\n", startMonthNum);
+        //printf("Debug: end month num= %d\n", endMonthNum);
 
+        /// does the date range include feb 29?
         if (startYear == endYear && IsLeapYear(startYear)) {
-            /// does the date range include feb 29?
             if (startMonthNum < 2) {
                 if (endMonthNum < 2) {
                     nLeapDays = 0;
@@ -100,6 +104,8 @@ int main()
                 else {
                     if (endMonthDay == 29)
                         nLeapDays = 1;
+                    else
+                        nLeapDays = 0;
                 }
             }
             else if (startMonthNum > 2) {
@@ -115,11 +121,12 @@ int main()
                 else {
                     if (endMonthDay == 29)
                         nLeapDays = 1;
+                    else
+                        nLeapDays = 0;
                 }
             }
         }
         else {
-            nLeapDays = nLeapYears;
             if (IsLeapYear(startYear)) {
                 if (startMonthNum > 2)
                     --nLeapDays;
@@ -133,7 +140,7 @@ int main()
                 }
             }
         }
-        printf("%d\n", nLeapDays);
+        printf("Case %d: %d\n", caseNum, nLeapDays);
     }
 
     return 0;
