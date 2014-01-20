@@ -98,12 +98,10 @@ int main()
         //printf("Debug: %s %d, %d\n", startMonthName, startMonthDay, startYear);
         //printf("Debug: %s %d, %d\n", endMonthName, endMonthDay, endYear);
 
-        if ((startYear % 4) != 0) {
-            for (int j = 1; j < 4; ++j) {
-                startYear += j;
-                if (startYear % 4 == 0) break;
-            }
-        }
+        startMonthNum = GetMonthNumber(startMonthName);
+        endMonthNum   = GetMonthNumber(endMonthName);
+        //printf("Debug: start month num= %d\n", startMonthNum);
+        //printf("Debug: end month num= %d\n", endMonthNum);
 
         nLeapDays = ((endYear - startYear) / 4);
         if (IsLeapYear(startYear) || IsLeapYear(endYear))
@@ -112,12 +110,7 @@ int main()
         nLeapDays -= GetNumberOfYearsMultipleOf(100, startYear, endYear);
         nLeapDays += GetNumberOfYearsMultipleOf(400, startYear, endYear);
 
-        startMonthNum = GetMonthNumber(startMonthName);
-        endMonthNum   = GetMonthNumber(endMonthName);
-        //printf("Debug: start month num= %d\n", startMonthNum);
-        //printf("Debug: end month num= %d\n", endMonthNum);
-
-        /// does the date range include feb 29?
+        /// does the date range include or exclude feb 29?
         if (IsLeapYear(startYear)) {
             if (startMonthNum > 2)
                 --nLeapDays;
