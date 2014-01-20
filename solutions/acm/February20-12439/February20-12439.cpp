@@ -54,6 +54,27 @@ bool IsLeapYear (int year)
     return isLeap;
 }
 
+int GetNumberOfYearsMultipleOf(int multiple, int startYear, int endYear)
+{
+    int nNearestStartMultipleYear = 0;
+    int nNearestEndMultipleYear = 0;
+    int nMultipleYears = 0;
+    if ((startYear % multiple) != 0)
+        nNearestStartMultipleYear = startYear + (multiple - (startYear % multiple));
+    else
+        nNearestStartMultipleYear = startYear;
+
+    if ((endYear % multiple) != 0)
+        nNearestEndMultipleYear = endYear - (multiple - (endYear % multiple));
+    else
+        nNearestEndMultipleYear = endYear;
+
+    if (nNearestStartMultipleYear < nNearestEndMultipleYear)
+        nMultipleYears = (nNearestEndMultipleYear - nNearestStartMultipleYear) / multiple;
+
+    return nMultipleYears;
+}
+
 int main()
 {
     int nCases = 0;
@@ -88,35 +109,8 @@ int main()
         if (IsLeapYear(startYear) || IsLeapYear(endYear))
             ++nLeapDays;
 
-        int nNearestStartHundredYear = 0;
-        int nNearestEndHundredYear = 0;
-        if ((startYear % 100) != 0)
-            nNearestStartHundredYear = startYear + (100 - (startYear % 100));
-        else
-            nNearestStartHundredYear = startYear;
-
-        if ((endYear % 100) != 0)
-            nNearestEndHundredYear = endYear - (100 - (endYear % 100));
-        else
-            nNearestEndHundredYear = endYear;
-
-        if (nNearestStartHundredYear < nNearestEndHundredYear)
-            nLeapDays -= (nNearestEndHundredYear - nNearestStartHundredYear) / 100;
-
-        int nNearestStartFourHundredYear = 0;
-        int nNearestEndFourHundredYear = 0;
-        if ((startYear % 400) != 0)
-            nNearestStartFourHundredYear = startYear + (400 - (startYear % 400));
-        else
-            nNearestStartFourHundredYear = startYear;
-
-        if ((endYear % 400) != 0)
-            nNearestEndFourHundredYear = endYear - (400 - (endYear % 400));
-        else
-            nNearestEndFourHundredYear = endYear;
-
-        if (nNearestStartFourHundredYear < nNearestEndFourHundredYear)
-            nLeapDays += (nNearestEndFourHundredYear - nNearestStartFourHundredYear) / 400;
+        nLeapDays -= GetNumberOfYearsMultipleOf(100, startYear, endYear);
+        nLeapDays += GetNumberOfYearsMultipleOf(400, startYear, endYear);
 
         startMonthNum = GetMonthNumber(startMonthName);
         endMonthNum   = GetMonthNumber(endMonthName);
@@ -124,51 +118,16 @@ int main()
         //printf("Debug: end month num= %d\n", endMonthNum);
 
         /// does the date range include feb 29?
-        if (startYear == endYear && IsLeapYear(startYear) != 0) {
-            if (startMonthNum < 2) {
-                if (endMonthNum < 2) {
-                    nLeapDays = 0;
-                }
-                else if (endMonthNum > 2) {
-                    nLeapDays = 1;
-                }
-                else {
-                    if (endMonthDay == 29)
-                        nLeapDays = 1;
-                    else
-                        nLeapDays = 0;
-                }
-            }
-            else if (startMonthNum > 2) {
-                nLeapDays = 0;
-            }
-            else {
-                if (endMonthNum < 2) {
-                    nLeapDays = 0;
-                }
-                else if (endMonthNum > 2) {
-                    nLeapDays = 1;
-                }
-                else {
-                    if (endMonthDay == 29)
-                        nLeapDays = 1;
-                    else
-                        nLeapDays = 0;
-                }
-            }
+        if (IsLeapYear(startYear)) {
+            if (startMonthNum > 2)
+                --nLeapDays;
         }
-        else {
-            if (IsLeapYear(startYear)) {
-                if (startMonthNum > 2)
+        if (IsLeapYear(endYear)) {
+            if (endMonthNum < 2)
+                --nLeapDays;
+            else if (endMonthNum == 2) {
+                if (endMonthDay < 29)
                     --nLeapDays;
-            }
-            if (IsLeapYear(endYear)) {
-                if (endMonthNum < 2)
-                    --nLeapDays;
-                else if (endMonthNum == 2) {
-                    if (endMonthDay < 29)
-                        --nLeapDays;
-                }
             }
         }
         printf("Case %d: %d\n", caseNum, nLeapDays);
