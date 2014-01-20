@@ -95,13 +95,8 @@ int main()
         scanf("%s %d, %d", startMonthName, &startMonthDay, &startYear);
         scanf("%s %d, %d", endMonthName, &endMonthDay, &endYear);
 
-        //printf("Debug: %s %d, %d\n", startMonthName, startMonthDay, startYear);
-        //printf("Debug: %s %d, %d\n", endMonthName, endMonthDay, endYear);
-
         startMonthNum = GetMonthNumber(startMonthName);
         endMonthNum   = GetMonthNumber(endMonthName);
-        //printf("Debug: start month num= %d\n", startMonthNum);
-        //printf("Debug: end month num= %d\n", endMonthNum);
 
         nLeapDays = ((endYear - startYear) / 4);
         if (IsLeapYear(startYear) || IsLeapYear(endYear))
