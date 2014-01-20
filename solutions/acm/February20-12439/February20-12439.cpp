@@ -84,17 +84,39 @@ int main()
             }
         }
 
-        nLeapDays = 0;
-        for (int year = startYear; year <= endYear; year += 4) {
-            if ((year % 100) == 0) {
-                if ((year % 400) == 0) {
-                    ++nLeapDays;
-                }
-            }
-            else {
-                ++nLeapDays;
-            }
-        }
+        nLeapDays = ((endYear - startYear) / 4);
+        if (IsLeapYear(startYear) || IsLeapYear(endYear))
+            ++nLeapDays;
+
+        int nNearestStartHundredYear = 0;
+        int nNearestEndHundredYear = 0;
+        if ((startYear % 100) != 0)
+            nNearestStartHundredYear = startYear + (100 - (startYear % 100));
+        else
+            nNearestStartHundredYear = startYear;
+
+        if ((endYear % 100) != 0)
+            nNearestEndHundredYear = endYear - (100 - (endYear % 100));
+        else
+            nNearestEndHundredYear = endYear;
+
+        if (nNearestStartHundredYear < nNearestEndHundredYear)
+            nLeapDays -= (nNearestEndHundredYear - nNearestStartHundredYear) / 100;
+
+        int nNearestStartFourHundredYear = 0;
+        int nNearestEndFourHundredYear = 0;
+        if ((startYear % 400) != 0)
+            nNearestStartFourHundredYear = startYear + (400 - (startYear % 400));
+        else
+            nNearestStartFourHundredYear = startYear;
+
+        if ((endYear % 400) != 0)
+            nNearestEndFourHundredYear = endYear - (400 - (endYear % 400));
+        else
+            nNearestEndFourHundredYear = endYear;
+
+        if (nNearestStartFourHundredYear < nNearestEndFourHundredYear)
+            nLeapDays += (nNearestEndFourHundredYear - nNearestStartFourHundredYear) / 400;
 
         startMonthNum = GetMonthNumber(startMonthName);
         endMonthNum   = GetMonthNumber(endMonthName);
