@@ -17,7 +17,7 @@ int main()
             if (maxNum < num)
                 maxNum = num;
         }
-        printf("case %d: %d\n", caseNum, maxNum);
+        printf("Case %d: %d\n", caseNum, maxNum);
     }
 
     return 0;
